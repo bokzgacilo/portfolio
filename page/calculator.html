@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My works - Calculator</title>
+  <link rel="stylesheet" href="calculator.css">
+</head>
+<body>
+  <div class="page calculator-container">
+
+    <div style="margin-top: 5%; color: white;">
+      <h1>Calculator</h1>
+    </div>
+  
+    <form name="form" class="calculator">
+  
+      <div class="display">
+        <input type="text" placeholder="0" name="displayResult" />
+      </div>
+  
+      <div class="calc_input">
+        <input type="button" class='grid-item' name="number_one" value="1" onClick="calcNumbers(number_one.value)">
+        <input type="button" class='grid-item' name="number_two" value="2" onClick="calcNumbers(number_two.value)">
+        <input type="button" class='grid-item' name="number_three" value="3" onClick="calcNumbers(number_three.value)">
+        <input type="button" class='grid-item' name="addition" value="+" onClick="calcNumbers(addition.value)">
+        <input type="button" class='grid-item' name="number_four" value="4" onClick="calcNumbers(number_four.value)">
+        <input type="button" class='grid-item' name="number_five" value="5" onClick="calcNumbers(number_five.value)">
+        <input type="button" class='grid-item' name="number_six" value="6" onClick="calcNumbers(number_six.value)">
+        <input type="button" class='grid-item' name="subtraction" value="-" onClick="calcNumbers(subtraction.value)">
+        <input type="button" class='grid-item' name="number_seven" value="7" onClick="calcNumbers(number_seven.value)">
+        <input type="button" class='grid-item' name="number_eight" value="8" onClick="calcNumbers(number_eight.value)">
+        <input type="button" class='grid-item' name="number_nine" value="9" onClick="calcNumbers(number_nine.value)">
+        <input type="button" class='grid-item' name="multiply" value="*" onClick="calcNumbers(multiply.value)">
+        <input type="button" class='grid-item' name="number_zero" value="0" onClick="calcNumbers(number_zero.value)">
+        <input type="button" class='grid-item' name="decimal" value="." onClick="calcNumbers(decimal.value)">
+        <input type="button" class='grid-item' name="division" value="/" onClick="calcNumbers(division.value)">
+        <input type="button" class="grid-item equal" value="=" onClick="displayResult.value=eval(displayResult.value)">
+      </div> 
+    </form>
+    <script>
+      function calcNumbers(result){
+        form.displayResult.value = form.displayResult.value + result;
+      }
+    </script>
+  </div>
+</body>
+</html>

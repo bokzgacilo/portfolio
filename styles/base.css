@@ -1,0 +1,204 @@
+@import url(sidebar.css);
+
+@font-face {
+  font-family: Youtube;
+  src: url("YouTubeSansBold.otf");
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Youtube';
+  color: #2A2929;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+.page {
+  width: 100%;
+  height: 100vh;
+}
+
+.mypic {
+  position: absolute;
+  height: auto;
+  width: 35%;
+  right: 31%;
+  bottom: 0;
+  animation: zoom-in-zoom-out 1s ease
+}
+
+.about-me-section, .works-section {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 7%;
+}
+
+.about-me-section {
+  left: -50%;
+  animation: slide-from-left 1s forwards;
+}
+
+.works-section {
+  right: -50%;
+  text-align: right;
+  animation: slide-from-right 1s forwards;
+  animation-delay: .5s;
+  /* z-index: 5; */
+}
+
+p {
+  margin: 0;
+  font-weight: bold;
+}
+
+.title {
+  font-size: 60px;
+  margin-bottom: 24px;
+}
+
+.section {
+  font-size: 45px;
+}
+
+.school {
+  font-size: 17.3px;
+}
+
+.work {
+  font-size: 35px;
+  margin-bottom: 5%;
+  cursor: pointer;
+  transition: all .1s ease-in-out;
+}
+
+.work:hover {
+  transform: scale(1.2)
+}
+
+.my-name {
+  margin-top: 40%;
+  text-align: center;
+  cursor: pointer;
+  transition: all .1s ease-in-out;
+}
+
+.my-name:hover {
+  transform: scale(1.2)
+}
+
+.firstname {
+  font-size: 58px;
+}
+
+.lastname {
+  font-size: 118px;
+  margin-top: -50px;
+}
+
+.quote {
+  margin-top: -20px;
+  font-size: 18px; 
+}
+
+.acad {
+  position: absolute;
+  top:-50%;
+  left: 6%;
+  animation: slide-from-top 1.2s forwards;
+  animation-delay: 1s;
+}
+
+.socialmedia {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10%;
+  justify-content: center;
+}
+
+.socialmedia-icons > img {
+  height: 20px;
+  width: 20px;
+  border-radius: 40px;
+}
+
+.socialmedia-icons {
+  height: 40px;
+  width: 40px;
+  background-color: #2A2929;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 3%;
+  cursor: pointer;
+}
+
+.socialmedia-icons:hover {
+  background-color: rgb(2, 110, 198);
+}
+
+@keyframes slide-from-left {
+    100% { left: 5%; }
+}
+
+@keyframes slide-from-right {
+    100% { right: 5%; }
+}
+
+@keyframes slide-from-bottom {
+    100% { 
+      bottom: 5%; 
+    }
+}
+@keyframes slide-from-bottom2 {
+  100% { 
+    bottom: 5%; 
+  }
+}
+@keyframes slide-from-top {
+    100% { top: 5%; }
+}
+
+@keyframes zoom-in-zoom-out {
+  0% {
+    transform: scale(0, 0);
+  }
+}
+
+.cover {
+  width: 100%;
+  height: 100vh;
+  display: block;
+  background-color: #2A2929;
+  position: absolute;
+  z-index: 4;
+  display: none;
+  overflow: hidden;
+}
+
+.maintenanceCover{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border: 1px #2A2929 solid;
+  padding: 10% 10% 10% 10%;
+}
+
+
+ @media only screen and (max-width:768px) {
+  body {
+    
+  }
+  .cover{
+    display: block;
+  }
+ }
+

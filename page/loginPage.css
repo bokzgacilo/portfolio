@@ -1,0 +1,50 @@
+@import url(../styles/base.css);
+
+body {
+  color: white;
+}
+
+.login-form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(125, 3, 3);
+}
+
+h3 {
+  font-size: 2rem;
+  margin-bottom: 4%;
+}
+
+.mainDiv {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin-top: -20%;
+  align-items: center;
+}
+
+input{
+  margin-top: 2%;
+  width: 40%;
+  padding: 15px 15px 15px 15px;
+  height: 10px;
+  border-radius: 10px;
+  border: 1px solid rgb(216, 216, 216);
+  font-size: 16px;
+}
+
+.loginBTN {
+  margin-top: 5%;
+  padding: 8px 15px 8px 15px;
+  width: 45%;
+  background-color: rgb(76, 147, 247);
+  font-size: 1.5rem;
+  color: white;
+  border: none;
+  /* height: 40px; */
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+}

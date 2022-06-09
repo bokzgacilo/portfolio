@@ -1,0 +1,174 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="styles.css">
+    <title>My works - Activity One</title>
+  </head>
+  <body>
+    <style> 
+
+      body {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 16px;
+        background-color: #01c4ff;
+      }
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+        }
+
+      input[type=text], input[type=password]{
+        width: 90%;
+        padding: 15px 15px;
+        margin: 5px 0;
+        box-sizing: border-box;
+        border: 2px solid #ffffff;
+        background-color: #e7e6e6d9;
+        border-radius: 25px;
+      }
+      input[type=submit] {
+        width: 90%;
+        padding: 15px 15px;
+        margin: 10px 0;
+        color: white;
+        background-color: #01c4ff;
+        border: none;
+        border-radius: 25px;
+        font-size: large;
+      }
+      .regForm{
+        background-color: #ffffff;
+        float: left;
+        width: 23%;
+        height: 85%;
+        margin-left: 25px;
+        padding-right: 15px;
+        border: 1px solid rgb(255, 255, 255);
+        border-radius: 40px;
+      }
+      .schoolSched{
+        float: right;
+        width: 70%;
+        padding-left: 25px;
+        margin-right: 5px;
+        height: 100%;
+        background-color: #ffffff;
+      }
+      table 
+      {
+        font-family: 'Open Sans', sans-serif;
+        width: 95%;
+      }
+            
+      td, th {
+        /* border: 1px solid #0B2B4E; */
+        text-align: left;
+        padding: 8px;
+      }
+      
+      tr:first-child {
+        background-color: #0B2B4E;
+        color: white;
+      }
+    </style>
+    <div class="row">
+      <div class="regForm column">
+        <div>
+          <form style="padding-top:40px;color: #6c6c6c; text-align: center;">
+            <h2>Register</h2>
+            <input type="text" name="E-mail" placeholder="E-mail">
+            <input type="password" name="Pass" placeholder="Password">
+            <input type="password" name="rePass" placeholder="Retype Password">
+            <div style="text-align: center; margin-top: 15px;">
+              <input type="submit" value="Register">
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="schoolSched column">
+        <h2>School Schedule (S.Y. 2021-2022)</h2> 
+        <div>
+            <table>
+              <tr>
+                <th>Subject</th>
+                <th>Days</th>
+                <th>Time</th>
+                <th>Room</th>
+                <th>Professor</th>
+              </tr>
+              <tr>
+                <th>Web Systems And Technologies</th>
+                <th>M</th>
+                <th>10:30AM-12:30PM</th>
+                <th>210</th>
+                <th>NICOLE BELAR</th>
+              </tr>
+              <tr>
+                <th>Information Assurance And Security (Data Privacy)</th>
+                <th>M</th>
+                <th>1:00PM-3:00PM</th>
+                <th>210</th>
+                <th>MARK FREDERICK SALONGA</th>
+              </tr>
+              <tr>
+                <th>Network Technology 2</th>
+                <th>T</th>
+                <th>7:00AM-10:00AM</th>
+                <th>LAB506</th>
+                <th>JOSELITO OYAO</th>
+              </tr>
+              <tr>
+                <th>Web Systems And Technologies</th>
+                <th>T</th>
+                <th>10:30AM-12:30PM</th>
+                <th>LAB506</th>
+                <th>NICOLE BELAR</th>
+              </tr>
+              <tr>
+                <th>Advanced Systems Integration And Architecture</th>
+                <th>W</th>
+                <th>7:00AM-10:00AM</th>
+                <th>LAB303</th>
+                <th>JOSELITO OYAO</th>
+              </tr>
+              <tr>
+                <th>Network Technology 2</th>
+                <th>W</th>
+                <th>2:00PM-4:00PM</th>
+                <th>206</th>
+                <th>JOSELITO OYAO</th>
+              </tr>
+              <tr>
+                <th>Advanced Systems Integration And Architecture</th>
+                <th>W</th>
+                <th>4:00PM-6:00PM</th>
+                <th>206</th>
+                <th>JOSELITO OYAO</th>
+              </tr>
+              <tr>
+                <th>Management Information Systems</th>
+                <th>TH</th>
+                <th>10:30AM-1:30PM</th>
+                <th>212</th>
+                <th>MARIA ANTONIA MARIANO</th>
+              </tr>
+              <tr>
+                <th>IT Capstone Project 1</th>
+                <th>F</th>
+                <th>6:30PM-8:30PM</th>
+                <th>210</th>
+                <th>MARK FREDERICK SALONGA</th>
+              </tr>
+              <tr>
+                <th>IT Capstone Project 1</th>
+                <th>S</th>
+                <th>5:30PM-8:30PM</th>
+                <th>LAB202</th>
+                <th>MARK FREDERICK SALONGA</th>
+              </tr>
+            </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
