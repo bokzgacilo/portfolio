@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowLeft, ChevronRight, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { type FocusEvent, useEffect, useRef, useState } from "react";
 
@@ -210,18 +211,246 @@ function NavDropdown({
   );
 }
 
-export function SiteHeader() {
+function MobileDrawer({
+  isOpen,
+  activePanel,
+  setActivePanel,
+  onClose,
+}: {
+  isOpen: boolean;
+  activePanel: "tools" | "blogs" | null;
+  setActivePanel: (panel: "tools" | "blogs" | null) => void;
+  onClose: () => void;
+}) {
+  const panelContent =
+    activePanel === "tools"
+      ? {
+          label: "Tools",
+          href: "/tools",
+          primary: tools.primary,
+          secondaryLabel: "Services",
+          secondaryItems: tools.services,
+          featured: tools.featured,
+        }
+      : activePanel === "blogs"
+        ? {
+            label: "Blogs",
+            href: "/blogs",
+            primary: blogs.primary,
+            secondaryLabel: "Topics",
+            secondaryItems: blogs.topics,
+            featured: blogs.featured,
+          }
+        : null;
+
   return (
-    <header className="print-hidden fixed inset-x-0 top-0 z-10 flex items-center justify-between gap-8 border-b border-[rgb(216_209_197/0.7)] bg-[rgb(247_245_240/0.82)] px-[clamp(1.25rem,4vw,4rem)] py-4 backdrop-blur-[18px] max-[900px]:flex-col max-[900px]:items-start max-[900px]:gap-[0.8rem] max-[560px]:absolute">
+    <div
+      className={`fixed inset-0 z-50 hidden transition-[visibility] duration-300 max-[900px]:block ${
+        isOpen ? "visible" : "invisible"
+      }`}
+      aria-hidden={!isOpen}
+    >
+      <button
+        className={`absolute inset-0 cursor-default bg-[rgb(21_20_18/0.32)] transition-opacity duration-300 ${
+          isOpen ? "opacity-100" : "opacity-0"
+        }`}
+        type="button"
+        onClick={onClose}
+        aria-label="Close menu"
+      />
+
+      <aside
+        className={`absolute top-0 right-0 h-full w-[min(88vw,420px)] overflow-hidden border-l border-border bg-paper shadow-mega transition-transform duration-300 ease-out ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile menu"
+      >
+        <div className="flex min-h-16 items-center justify-between border-b border-border px-5">
+          <Link
+            className="display text-[1.05rem] font-[650] no-underline"
+            href="/"
+            onClick={onClose}
+            aria-label="Ariel Jericko Gacilo portfolio"
+          >
+            AJG
+          </Link>
+          <button
+            className="grid size-10 place-items-center rounded-full border border-border bg-card text-foreground"
+            type="button"
+            onClick={onClose}
+            aria-label="Close menu"
+          >
+            <X className="size-4" strokeWidth={2} />
+          </button>
+        </div>
+
+        <nav className="grid px-5 py-5" aria-label="Mobile navigation">
+          <button
+            className="flex min-h-14 items-center justify-between border-b border-border text-left mono-label text-muted-foreground"
+            type="button"
+            onClick={() => setActivePanel("tools")}
+          >
+            Tools
+            <ChevronRight className="size-4" strokeWidth={1.8} />
+          </button>
+          <button
+            className="flex min-h-14 items-center justify-between border-b border-border text-left mono-label text-muted-foreground"
+            type="button"
+            onClick={() => setActivePanel("blogs")}
+          >
+            Blogs
+            <ChevronRight className="size-4" strokeWidth={1.8} />
+          </button>
+          <Link
+            className="flex min-h-14 items-center border-b border-border mono-label text-muted-foreground no-underline"
+            href="/contact"
+            onClick={onClose}
+          >
+            Contact
+          </Link>
+        </nav>
+
+        <div
+          className={`absolute inset-0 bg-paper transition-transform duration-300 ease-out ${
+            panelContent ? "translate-x-0" : "translate-x-full"
+          }`}
+          aria-hidden={!panelContent}
+        >
+          {panelContent ? (
+            <div className="flex h-full flex-col">
+              <div className="flex min-h-16 items-center justify-between border-b border-border px-5">
+                <button
+                  className="inline-flex items-center gap-2 mono-label text-muted-foreground"
+                  type="button"
+                  onClick={() => setActivePanel(null)}
+                >
+                  <ArrowLeft className="size-4" strokeWidth={1.8} />
+                  Menu
+                </button>
+                <button
+                  className="grid size-10 place-items-center rounded-full border border-border bg-card text-foreground"
+                  type="button"
+                  onClick={onClose}
+                  aria-label="Close menu"
+                >
+                  <X className="size-4" strokeWidth={2} />
+                </button>
+              </div>
+
+              <div className="min-h-0 overflow-y-auto px-5 py-5">
+                <Link
+                  className="display mb-6 block text-[2.25rem] leading-none text-foreground no-underline"
+                  href={panelContent.href}
+                  onClick={onClose}
+                >
+                  {panelContent.label}
+                </Link>
+
+                <div className="grid gap-8">
+                  <div className="grid gap-3">
+                    <h2 className="mono-label text-brand">Featured</h2>
+                    <Link
+                      className={`${megaLink} mega-main-link text-foreground`}
+                      href={panelContent.href}
+                      onClick={onClose}
+                    >
+                      View all {panelContent.label.toLowerCase()}
+                    </Link>
+                    {panelContent.primary.map(([itemLabel, itemHref]) => (
+                      <a
+                        className={megaLink}
+                        key={itemHref}
+                        href={itemHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={onClose}
+                      >
+                        {itemLabel}
+                      </a>
+                    ))}
+                  </div>
+
+                  <div className="grid gap-3">
+                    <h2 className="mono-label text-brand">{panelContent.secondaryLabel}</h2>
+                    {panelContent.secondaryItems.map((item) => (
+                      <span className={megaLink} key={item}>
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="grid gap-3">
+                    <h2 className="mono-label text-brand">Preview</h2>
+                    {panelContent.featured.map((item) => (
+                      <a
+                        className="group/feature relative flex min-h-[190px] items-end overflow-hidden bg-secondary"
+                        key={item.href}
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={onClose}
+                      >
+                        <img
+                          className="absolute inset-0 size-full object-cover object-left-top transition-transform duration-[350ms] group-hover/feature:scale-[1.035] group-focus/feature:scale-[1.035]"
+                          src={item.image}
+                          alt=""
+                          loading="lazy"
+                          aria-hidden="true"
+                        />
+                        <span className="relative z-1 w-full bg-gradient-to-b from-transparent to-[rgb(21_20_18/0.72)] p-4 font-sans text-[0.95rem] font-extrabold text-paper">
+                          {item.title}
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : null}
+        </div>
+      </aside>
+    </div>
+  );
+}
+
+export function SiteHeader() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeMobilePanel, setActiveMobilePanel] = useState<"tools" | "blogs" | null>(null);
+
+  function closeMobileMenu() {
+    setIsMobileMenuOpen(false);
+    setActiveMobilePanel(null);
+  }
+
+  useEffect(() => {
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") closeMobileMenu();
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMobileMenuOpen]);
+
+  return (
+    <header className="print-hidden fixed inset-x-0 top-0 z-10 flex items-center justify-between gap-8 border-b border-[rgb(216_209_197/0.7)] bg-[rgb(247_245_240/0.82)] px-[clamp(1.25rem,4vw,4rem)] py-4 backdrop-blur-[18px] max-[900px]:gap-4 max-[560px]:absolute">
       <Link
-        className="display text-[1.05rem] font-[650] whitespace-nowrap no-underline"
+        className="display text-[1.05rem] font-[650] whitespace-nowrap no-underline max-[900px]:text-[1.2rem]"
         href="/"
         aria-label="Ariel Jericko Gacilo portfolio"
       >
-        Ariel Jericko Gacilo
+        <span className="max-[900px]:hidden">Ariel Jericko Gacilo</span>
+        <span className="hidden max-[900px]:inline">AJG</span>
       </Link>
       <nav
-        className="flex flex-wrap justify-end gap-x-[0.6rem] gap-y-[0.35rem] max-[900px]:justify-start max-[900px]:gap-x-4 max-[900px]:gap-y-3"
+        className="flex flex-wrap justify-end gap-x-[0.6rem] gap-y-[0.35rem] max-[900px]:hidden"
         aria-label="Primary navigation"
       >
         <NavDropdown
@@ -244,6 +473,21 @@ export function SiteHeader() {
           Contact
         </Link>
       </nav>
+      <button
+        className="hidden size-10 place-items-center rounded-full border border-border bg-card text-foreground shadow-lift max-[900px]:grid"
+        type="button"
+        onClick={() => setIsMobileMenuOpen(true)}
+        aria-label="Open menu"
+        aria-expanded={isMobileMenuOpen}
+      >
+        <Menu className="size-4" strokeWidth={2} />
+      </button>
+      <MobileDrawer
+        isOpen={isMobileMenuOpen}
+        activePanel={activeMobilePanel}
+        setActivePanel={setActiveMobilePanel}
+        onClose={closeMobileMenu}
+      />
     </header>
   );
 }

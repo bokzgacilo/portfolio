@@ -94,7 +94,7 @@ export function WorkShowcase({ variant = "catalog" }: { variant?: "carousel" | "
       <div
         className={
           isCarousel
-            ? "flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 [padding-inline:var(--gallery-bleed)] [scrollbar-width:thin]"
+            ? "flex snap-x snap-mandatory gap-3 overflow-x-auto pb-4 [padding-inline:var(--gallery-bleed)] [scrollbar-width:thin]"
             : "grid"
         }
       >
@@ -103,7 +103,7 @@ export function WorkShowcase({ variant = "catalog" }: { variant?: "carousel" | "
             className={cn(
               cardShell,
               isCarousel
-                ? "min-h-[min(72vw,700px)] flex-[0_0_min(84vw,1040px)] snap-start border border-border max-[900px]:min-h-[560px] max-[900px]:flex-[0_0_min(88vw,720px)] max-[560px]:min-h-[520px]"
+                ? "min-h-[min(54vw,520px)] flex-[0_0_min(72vw,760px)] snap-start border border-border max-[900px]:min-h-[460px] max-[900px]:flex-[0_0_min(84vw,620px)] max-[560px]:min-h-[400px]"
                 : "min-h-[620px] max-[560px]:min-h-[520px]"
             )}
             key={project.title}
@@ -132,17 +132,29 @@ export function WorkShowcase({ variant = "catalog" }: { variant?: "carousel" | "
 
               <span
                 className={cn(
-                  "mx-4 mt-auto mb-4 flex flex-col justify-between gap-[1.25rem] border border-[rgb(21_20_18/0.1)] bg-[rgb(255_253_248/0.9)] p-[clamp(1rem,2vw,1.45rem)] backdrop-blur-[18px]",
-                  isCarousel ? "w-[min(720px,calc(100%_-_2rem))]" : "w-[min(680px,calc(100%_-_2rem))]",
+                  "mx-4 mt-auto mb-4 flex flex-col justify-between gap-[1.25rem] border border-[rgb(21_20_18/0.1)] bg-[rgb(255_253_248/0.9)] p-[clamp(0.95rem,1.6vw,1.25rem)] backdrop-blur-[18px]",
+                  isCarousel ? "w-[min(560px,calc(100%_-_2rem))]" : "w-[min(680px,calc(100%_-_2rem))]",
                   "max-[900px]:mx-3 max-[900px]:mb-3 max-[900px]:w-[calc(100%_-_1.5rem)]"
                 )}
               >
                 <span className="grid gap-[0.85rem]">
                   <span className="mono-label text-muted-foreground">{project.kicker}</span>
-                  <span className="display block text-[clamp(2.4rem,4vw,4.6rem)] font-bold leading-none max-[560px]:text-[2.35rem]">
+                  <span
+                    className={cn(
+                      "display block font-bold leading-none",
+                      isCarousel
+                        ? "text-[clamp(1.7rem,2.4vw,2.85rem)] max-[560px]:text-[1.65rem]"
+                        : "text-[clamp(2.4rem,4vw,4.6rem)] max-[560px]:text-[2.35rem]"
+                    )}
+                  >
                     {project.title}
                   </span>
-                  <span className="block max-w-[58ch] text-[1.05rem] leading-[1.55] text-muted-foreground">
+                  <span
+                    className={cn(
+                      "block max-w-[58ch] leading-[1.55] text-muted-foreground",
+                      isCarousel ? "text-[0.95rem]" : "text-[1.05rem]"
+                    )}
+                  >
                     {project.description}
                   </span>
                 </span>

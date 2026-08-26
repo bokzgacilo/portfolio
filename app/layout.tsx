@@ -28,9 +28,9 @@ const siteUrl = "https://www.bokzgacilo.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Ariel Jericko Gacilo | Technical Partner for Web, Commerce, and Automation",
+  title: "Ariel Jericko Gacilo | Technical Partner for Apps, Games, and Systems",
   description:
-    "Ariel Jericko Gacilo partners with businesses to build web products, Shopify and commerce workflows, API integrations, data automation, and launch-ready systems.",
+    "Ariel Jericko Gacilo partners with teams to build apps, games, desktop tools, commerce workflows, API integrations, automation, and launch-ready systems.",
   keywords: [
     "Ariel Jericko Gacilo",
     "full-stack developer Philippines",
@@ -38,6 +38,9 @@ export const metadata: Metadata = {
     "React developer",
     "Next.js developer",
     "Shopify developer",
+    "Android app developer",
+    "desktop app developer",
+    "game developer",
     "thesis system developer",
     "capstone system developer",
     "web scraping",
@@ -62,9 +65,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "Ariel Jericko Gacilo Portfolio",
-    title: "Ariel Jericko Gacilo | Technical Partner for Web, Commerce, and Automation",
+    title: "Ariel Jericko Gacilo | Technical Partner for Apps, Games, and Systems",
     description:
-      "Technical partner for web products, Shopify and commerce workflows, API integrations, automation, data work, and launch support.",
+      "Technical partner for apps, games, desktop tools, commerce workflows, API integrations, automation, data work, and launch support.",
     url: siteUrl,
     images: [
       {
@@ -77,9 +80,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ariel Jericko Gacilo | Technical Partner for Web, Commerce, and Automation",
+    title: "Ariel Jericko Gacilo | Technical Partner for Apps, Games, and Systems",
     description:
-      "Partnering with businesses on web products, commerce workflows, API integrations, automation, and launch-ready systems.",
+      "Partnering on apps, games, desktop tools, commerce workflows, API integrations, automation, and launch-ready systems.",
     images: ["/assets/headshot.jpeg"],
   },
   robots: {

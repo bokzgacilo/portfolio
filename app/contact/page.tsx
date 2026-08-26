@@ -1,9 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
-
 import { Eyebrow, measure } from "../components/editorial";
+import { ContactForm } from "./contact-form";
 
 const contactLinks = [
   ["Email", "bokzgacilo@gmail.com", "mailto:bokzgacilo@gmail.com"],
@@ -12,35 +8,10 @@ const contactLinks = [
   ["GitHub", "bokzgacilo", "https://github.com/bokzgacilo"],
 ] as const;
 
-const interests = [
-  "Web app or custom system",
-  "Shopify / e-commerce",
-  "API integration",
-  "Automation or data workflow",
-  "Fix an existing project",
-  "Not sure yet",
-] as const;
-
 export const metadata = {
   title: "Contact | Ariel Jericko Gacilo",
   description: "Start a conversation with Ariel Jericko Gacilo about web products, Shopify, integrations, automation, and launch support.",
 };
-
-/**
- * This form's fields are underlines, not boxes. The shadcn Input/Textarea
- * source is kept as-is and the box treatment is overridden here so the two
- * stay upgradeable.
- */
-const field = cn(
-  "h-auto rounded-none border-0 border-b border-border bg-transparent px-0 py-[0.7rem]",
-  "text-base leading-[1.5] text-foreground md:text-base",
-  "placeholder:text-muted-foreground placeholder:opacity-70",
-  "focus-visible:border-foreground focus-visible:ring-0"
-);
-
-const fieldLabel = "grid min-w-0 gap-[0.45rem]";
-const fieldLabelText = "mono-label text-muted-foreground";
-const formRow = "grid grid-cols-2 gap-x-5 gap-y-[1.65rem] max-[560px]:grid-cols-1";
 
 export default function ContactPage() {
   return (
@@ -72,71 +43,7 @@ export default function ContactPage() {
           </div>
         </div>
 
-        <form
-          className="reveal grid gap-[1.65rem] border-t border-border pt-[1.75rem]"
-          action="mailto:bokzgacilo@gmail.com"
-          method="post"
-          encType="text/plain"
-        >
-          <div className={formRow}>
-            <label className={fieldLabel}>
-              <span className={fieldLabelText}>Your name</span>
-              <Input className={field} name="name" type="text" autoComplete="name" required />
-            </label>
-            <label className={fieldLabel}>
-              <span className={fieldLabelText}>Your email</span>
-              <Input className={field} name="email" type="email" autoComplete="email" required />
-            </label>
-          </div>
-
-          <div className={formRow}>
-            <label className={fieldLabel}>
-              <span className={fieldLabelText}>Company / project</span>
-              <Input className={field} name="company" type="text" autoComplete="organization" />
-            </label>
-            <label className={fieldLabel}>
-              <span className={fieldLabelText}>Website</span>
-              <Input className={field} name="website" type="url" placeholder="https://" />
-            </label>
-          </div>
-
-          <label className={fieldLabel}>
-            <span className={fieldLabelText}>What are you interested in discussing?</span>
-            {/* Native select on purpose: it keeps the OS picker on mobile. */}
-            <select
-              className={cn(field, "select-caret w-full cursor-pointer appearance-none pr-7 outline-none focus:border-foreground")}
-              name="interest"
-              defaultValue=""
-            >
-              <option value="" disabled>
-                Select one
-              </option>
-              {interests.map((interest) => (
-                <option key={interest}>{interest}</option>
-              ))}
-            </select>
-          </label>
-
-          <label className={fieldLabel}>
-            <span className={fieldLabelText}>Tell me more about the work</span>
-            <Textarea
-              className={cn(field, "min-h-40 resize-y leading-[1.6]")}
-              name="message"
-              rows={7}
-              placeholder="Share the goal, current bottleneck, scope, budget range, or launch date."
-              required
-            />
-          </label>
-
-          <Button
-            className="mt-2 w-fit border-0"
-            variant="editorial-primary"
-            size="pill"
-            type="submit"
-          >
-            Send it over
-          </Button>
-        </form>
+        <ContactForm />
       </section>
 
       <section

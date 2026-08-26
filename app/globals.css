@@ -47,7 +47,6 @@
   --measure-wide: min(1320px, calc(100% - 2.5rem));
   --measure-gallery: min(1440px, calc(100% - 2.5rem));
   --measure-map: min(1380px, calc(100% - 2.5rem));
-  --measure-timeline: min(1280px, calc(100% - 2.5rem));
 
   /* Pulls the work carousel's rails out to the viewport edge. */
   --gallery-bleed: calc((100vw - min(1440px, calc(100vw - 2.5rem))) / 2);
@@ -165,40 +164,6 @@
    The handful of rules utilities genuinely cannot express.
 --------------------------------------------------------------------------- */
 
-/* Decorative geometry behind the capability map: two diagonals crossing at
-   the core. */
-.capability-lines::before,
-.capability-lines::after {
-  content: "";
-  position: absolute;
-  inset: 50% auto auto 50%;
-  width: 78%;
-  height: 1px;
-  background: rgb(117 99 77 / 0.34);
-  transform-origin: left center;
-}
-
-.capability-lines::before {
-  transform: rotate(30deg) translateX(-50%);
-}
-
-.capability-lines::after {
-  transform: rotate(150deg) translateX(-50%);
-}
-
-/* Timeline phase banner's arrowhead, coloured by the phase's own token. */
-.timeline-arrow::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: -0.95rem;
-  width: 0;
-  height: 0;
-  border-top: 1.52rem solid transparent;
-  border-bottom: 1.52rem solid transparent;
-  border-left: 0.95rem solid var(--phase-color);
-}
-
 /* Native select's caret, drawn from two gradients rather than shipping an
    SVG asset. */
 .select-caret {
@@ -207,6 +172,87 @@
   background-position: right 0.6rem center, right 0.25rem center;
   background-size: 0.36rem 0.36rem, 0.36rem 0.36rem;
   background-repeat: no-repeat;
+}
+
+/* Editorial range slider. The filled portion is painted by a gradient driven
+   by --range-fill, which the owning component updates as the value changes --
+   the native ::-moz-range-progress has no WebKit equivalent. */
+.range-editorial {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 1.5rem;
+  background: transparent;
+  cursor: grab;
+}
+
+.range-editorial:active {
+  cursor: grabbing;
+}
+
+.range-editorial::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--foreground) var(--range-fill, 50%),
+    var(--border) var(--range-fill, 50%)
+  );
+}
+
+.range-editorial::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  /* Centres the 20px thumb on the 4px track. */
+  margin-top: -8px;
+  border-radius: 999px;
+  background: var(--paper);
+  border: 2px solid var(--foreground);
+  box-shadow: 0 2px 6px rgb(21 20 18 / 0.18);
+}
+
+.range-editorial::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border);
+}
+
+.range-editorial::-moz-range-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--foreground);
+}
+
+.range-editorial::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--paper);
+  border: 2px solid var(--foreground);
+}
+
+/* The focus ring is drawn on the thumb, not the whole control, so the default
+   outline is suppressed. These two rules must stay separate: a selector list
+   mixing vendor pseudo-elements is discarded wholesale by both engines. */
+.range-editorial:focus {
+  outline: none;
+}
+
+.range-editorial:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.range-editorial:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.range-editorial:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
 }
 
 /* CaseTitle drives this attribute while the heading is in flight. The sidebar
