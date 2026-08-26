@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Mono, Fraunces, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { PageTransition } from "./components/page-transition";
 import { SiteHeader } from "./components/site-header";
 import "./globals.css";
@@ -108,6 +109,7 @@ export default function RootLayout({
       <body>
         <SiteHeader />
         <PageTransition>{children}</PageTransition>
+        <Analytics />
       </body>
     </html>
   );
