@@ -13,7 +13,7 @@
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta name="format-detection" content="telephone=yes" />
-  <meta name="theme-color" content="#f7f7f2" />
+  <meta name="theme-color" content="#f6f4ef" />
   <link rel="canonical" href="https://www.bokzgacilo.com/" />
   <link rel="alternate" href="https://www.bokzgacilo.com/" hreflang="en" />
   <link rel="alternate" href="https://www.bokzgacilo.com/" hreflang="x-default" />
@@ -41,7 +41,7 @@
     content="Full-stack developer available for freelance projects, Shopify stores, thesis systems, APIs, Excel, ETL, web scraping, and system fixes." />
   <meta name="twitter:image" content="https://www.bokzgacilo.com/assets/headshot.jpeg" />
   <link
-    href="https://fonts.googleapis.com/css2?family=Archivo+Black&amp;family=DM+Mono:wght@300;400;500&amp;family=Inter:wght@400;500;700;900&amp;display=swap"
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&amp;family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,35,0..1&amp;family=Inter:wght@400;500;600;700&amp;display=swap"
     rel="stylesheet" />
   <script type="application/ld+json">
     {
@@ -146,6 +146,14 @@
         {
           "@type": "CreativeWork",
           "position": 1,
+          "name": "nowtpad",
+          "url": "https://nowtpad.vercel.app/",
+          "image": "https://www.bokzgacilo.com/assets/projects/nowtpad.png",
+          "description": "A minimalist note-taking web app deployed on Vercel."
+        },
+        {
+          "@type": "CreativeWork",
+          "position": 2,
           "name": "Catalog-as-a-Service",
           "url": "https://catalog.bokzgacilo.com/",
           "image": "https://www.bokzgacilo.com/assets/projects/catalog-bokzgacilo.png",
@@ -153,7 +161,7 @@
         },
         {
           "@type": "CreativeWork",
-          "position": 2,
+          "position": 3,
           "name": "SM Markets Clone",
           "url": "https://smmarket-dev.vercel.app/",
           "image": "https://www.bokzgacilo.com/assets/projects/smmarket-dev.png",
@@ -161,7 +169,7 @@
         },
         {
           "@type": "BlogPosting",
-          "position": 3,
+          "position": 4,
           "headline": "Integrating Salesforce CRM Leads with a Next.js Page Router App",
           "url": "https://medium.com/@bokzgacilo/integrating-salesforce-crm-leads-with-a-next-js-page-router-app-7b29bac20ea9",
           "author": {
@@ -178,7 +186,7 @@
       "@context": "https://schema.org",
       "@type": "ItemList",
       "@id": "https://www.bokzgacilo.com/#repositories",
-      "name": "Latest GitHub Repositories",
+      "name": "GitHub Contribution History",
       "itemListElement": [
         {
           "@type": "SoftwareSourceCode",
@@ -243,9 +251,8 @@
       <li><a href="#projects">Projects</a></li>
       <li><a href="#services">Services</a></li>
       <li><a href="#skills">Skills</a></li>
-      <li><a href="#repositories">Repositories</a></li>
+      <li><a href="#repositories">Contributions</a></li>
       <li><a href="#training">Certifications</a></li>
-      <li><a href="#about">About</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
@@ -319,6 +326,28 @@
     <div class="featured-projects">
       <article class="featured-project reveal">
         <div class="project-shot">
+          <img src="assets/projects/nowtpad.png" alt="Screenshot of nowtpad minimalist note-taking web app"
+            loading="lazy">
+        </div>
+        <div class="featured-copy">
+          <div>
+            <div class="featured-kicker">nowtpad.vercel.app</div>
+            <h3 class="featured-title">nowtpad</h3>
+            <p class="featured-desc">A minimalist note-taking web app deployed on Vercel, shaped around a calm writing
+              surface and a simple browser-ready workflow.</p>
+          </div>
+          <div class="featured-actions">
+            <span class="project-tag">Notes</span>
+            <span class="project-tag">Minimal UI</span>
+            <span class="project-tag">Vercel</span>
+            <a href="https://nowtpad.vercel.app/" class="btn btn-secondary" target="_blank"
+              rel="noopener noreferrer">Visit Site</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="featured-project reveal">
+        <div class="project-shot">
           <img src="assets/projects/catalog-bokzgacilo.png"
             alt="Screenshot of catalog.bokzgacilo.com public product catalog API landing page" loading="lazy">
         </div>
@@ -328,7 +357,7 @@
             <h3 class="featured-title">Catalog-as-a-Service</h3>
             <p class="featured-desc">A public product catalog API landing page for developers building storefronts,
               prototypes, templates, tutorials, and integrations. The site presents API access, documentation, and a
-              waitlist-style call to action in a bold brutalist interface.</p>
+              waitlist-style call to action in a developer-focused interface.</p>
           </div>
           <div class="featured-actions">
             <span class="project-tag">API</span>
@@ -537,60 +566,17 @@
 
   <div class="divider"></div>
 
-  <!-- GITHUB REPOSITORIES -->
+  <!-- GITHUB CONTRIBUTIONS -->
   <div class="section-wrap" id="repositories">
     <div class="section-header reveal">
       <div class="section-eyebrow">GitHub</div>
-      <h2 class="section-title">Latest <em>Repositories</em></h2>
+      <h2 class="section-title">Commit <em>History</em></h2>
     </div>
-    <div class="repo-list reveal">
-      <a class="repo-item" href="https://github.com/bokzgacilo/ai-skill-template" target="_blank" rel="noopener noreferrer">
-        <span class="repo-index">01</span>
-        <span class="repo-main">
-          <span class="repo-name">ai-skill-template</span>
-          <span class="repo-desc">Reusable AI skill template installable into Claude Code and OpenAI Codex CLI.</span>
-        </span>
-        <span class="repo-meta">JavaScript · Updated Jul 12, 2026</span>
-      </a>
-      <a class="repo-item" href="https://github.com/bokzgacilo/sm-market-dev" target="_blank" rel="noopener noreferrer">
-        <span class="repo-index">02</span>
-        <span class="repo-main">
-          <span class="repo-name">sm-market-dev</span>
-          <span class="repo-desc">SM Markets-style grocery storefront clone deployed on Vercel.</span>
-        </span>
-        <span class="repo-meta">JavaScript · Updated Jun 8, 2026</span>
-      </a>
-      <a class="repo-item" href="https://github.com/bokzgacilo/music-player-backend" target="_blank" rel="noopener noreferrer">
-        <span class="repo-index">03</span>
-        <span class="repo-main">
-          <span class="repo-name">music-player-backend</span>
-          <span class="repo-desc">Backend repository for a music player application.</span>
-        </span>
-        <span class="repo-meta">TypeScript · Updated Jun 5, 2026</span>
-      </a>
-      <a class="repo-item" href="https://github.com/bokzgacilo/music-player-frontend" target="_blank" rel="noopener noreferrer">
-        <span class="repo-index">04</span>
-        <span class="repo-main">
-          <span class="repo-name">music-player-frontend</span>
-          <span class="repo-desc">Frontend repository for a music player application, deployed on Vercel.</span>
-        </span>
-        <span class="repo-meta">TypeScript · Updated Jun 5, 2026</span>
-      </a>
-      <a class="repo-item" href="https://github.com/bokzgacilo/audit-portal" target="_blank" rel="noopener noreferrer">
-        <span class="repo-index">05</span>
-        <span class="repo-main">
-          <span class="repo-name">audit-portal</span>
-          <span class="repo-desc">Audit portal project with a TypeScript codebase and Vercel deployment.</span>
-        </span>
-        <span class="repo-meta">TypeScript · Updated Apr 24, 2026</span>
-      </a>
-      <a class="repo-item" href="https://github.com/bokzgacilo/product-enrichment-form" target="_blank" rel="noopener noreferrer">
-        <span class="repo-index">06</span>
-        <span class="repo-main">
-          <span class="repo-name">product-enrichment-form</span>
-          <span class="repo-desc">Product enrichment form project for structured product data workflows.</span>
-        </span>
-        <span class="repo-meta">TypeScript · Updated Apr 15, 2026</span>
+    <div class="contribution-panel reveal">
+      <a class="contribution-chart" href="https://github.com/bokzgacilo" target="_blank" rel="noopener noreferrer">
+        <img src="https://ghchart.rshah.org/22c55e/bokzgacilo"
+          alt="GitHub contribution chart for bokzgacilo" loading="lazy">
+        <span class="contribution-link">github.com/bokzgacilo</span>
       </a>
     </div>
   </div>
@@ -641,33 +627,6 @@
 
   <div class="divider"></div>
 
-  <!-- ABOUT -->
-  <div class="section-wrap" id="about">
-    <div class="section-header reveal">
-      <div class="section-eyebrow">About Me</div>
-      <h2 class="section-title">Ariel Jericko <em>Gacilo</em></h2>
-    </div>
-    <div class="about-grid">
-      <div class="about-left reveal">
-        <div class="about-img">
-          <img src="assets/headshot.jpeg" alt="Headshot of Ariel Jericko Gacilo" loading="lazy">
-          <div class="about-img-caption">
-            <div class="about-img-caption-name">Ariel Jericko Gacilo</div>
-            <div class="about-img-caption-role">Full-Stack Developer for Hire</div>
-          </div>
-        </div>
-      </div>
-      <div class="about-right reveal">
-        <p>Hi, I'm <strong>Ariel Jericko Gacilo</strong>, a full-stack developer available for freelance clients, short-term builds, system improvements, and urgent fixes.</p>
-        <p>I can help with <strong>custom web applications, business websites, landing pages, e-commerce and Shopify stores, thesis or capstone systems, APIs, integrations, deployment, VPS setup, domain configuration,</strong> and maintenance for existing systems.</p>
-        <p>I also handle <strong>Excel work, ETL workflows, data cleaning, report preparation, and scraping data from target websites</strong> when you need structured information for operations, research, or business use.</p>
-        <p>Whether the project starts from zero or needs someone to debug, improve, and ship it, send the requirements, timeline, and budget so I can scope the work properly.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
   <div class="section-wrap" id="contact">
     <div class="section-header reveal">
       <div class="section-eyebrow">Contact</div>
@@ -712,35 +671,6 @@
   </div>
 
   </main>
-
-  <div class="palette-switcher" aria-label="Color palette switcher">
-    <button class="palette-toggle" type="button" aria-expanded="false" aria-controls="palette-options">
-      <span class="palette-toggle-icon" aria-hidden="true"></span>
-      <span class="palette-toggle-text">Palette</span>
-    </button>
-    <div class="palette-options" id="palette-options" hidden>
-      <button class="palette-option is-active" type="button" data-palette="mono">
-        <span class="palette-swatch palette-swatch-mono" aria-hidden="true"></span>
-        Black / White
-      </button>
-      <button class="palette-option" type="button" data-palette="paper">
-        <span class="palette-swatch palette-swatch-paper" aria-hidden="true"></span>
-        Paper / Ink
-      </button>
-      <button class="palette-option" type="button" data-palette="blue">
-        <span class="palette-swatch palette-swatch-blue" aria-hidden="true"></span>
-        Blue Print
-      </button>
-      <button class="palette-option" type="button" data-palette="green">
-        <span class="palette-swatch palette-swatch-green" aria-hidden="true"></span>
-        Terminal
-      </button>
-      <button class="palette-option" type="button" data-palette="pink">
-        <span class="palette-swatch palette-swatch-pink" aria-hidden="true"></span>
-        Pop Brutal
-      </button>
-    </div>
-  </div>
 
   <div class="divider"></div>
   <footer>
