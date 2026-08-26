@@ -1,8 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { Project } from "../data/projects";
 
+import { Button } from "@/components/ui/button";
+
+import type { Project } from "../data/projects";
+import { caseStudy, CaseMeta, DrawerSection, Eyebrow, TagRow } from "./editorial";
+
+/**
+ * Alternative case-study view that docks the title with an IntersectionObserver
+ * instead of the scroll-linked transform in CaseTitle. Currently unreferenced --
+ * the /works/[slug] route uses CaseTitle.
+ */
 export function WorkDetailView({ project }: { project: Project }) {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [isDocked, setIsDocked] = useState(false);
@@ -30,54 +39,38 @@ export function WorkDetailView({ project }: { project: Project }) {
   }, []);
 
   return (
-    <main className={`case-study${isDocked ? " is-title-docked" : ""}`}>
-      <section className="case-hero">
-        <p className="eyebrow">{project.type}</p>
-        <h1 ref={titleRef}>{project.title}</h1>
-        <p>{project.description}</p>
-        <div className="tag-row">
-          {project.tags.map((tag) => (
-            <span key={tag}>{tag}</span>
-          ))}
-        </div>
+    <main className={caseStudy.page}>
+      <section className={caseStudy.hero}>
+        <Eyebrow>{project.type}</Eyebrow>
+        <h1 className={caseStudy.title} ref={titleRef}>
+          {project.title}
+        </h1>
+        <p className={caseStudy.lede}>{project.description}</p>
+        <TagRow className="mt-4" tags={project.tags} />
       </section>
 
-      <section className="case-layout">
-        <div className="case-gallery">
+      <section className={caseStudy.layout}>
+        <div className={caseStudy.gallery}>
           {project.gallery.map((image) => (
-            <img key={image} src={image} alt={project.alt} />
+            <img className={caseStudy.galleryImage} key={image} src={image} alt={project.alt} />
           ))}
         </div>
 
-        <aside className="case-details">
-          <div className="case-sticky-title" aria-hidden={!isDocked}>
-            <span>{project.type}</span>
-            <strong>{project.title}</strong>
+        <aside className={caseStudy.details} data-case-details>
+          <div className={caseStudy.stickyTitle} aria-hidden={!isDocked}>
+            <span className="mono-label text-brand">{project.type}</span>
+            <strong className={caseStudy.stickyTarget}>{project.title}</strong>
           </div>
 
-          <dl className="project-meta">
-            <div>
-              <dt>Duration</dt>
-              <dd>{project.duration}</dd>
-            </div>
-            <div>
-              <dt>Tech stack</dt>
-              <dd>{project.techStack.join(", ")}</dd>
-            </div>
-          </dl>
+          <CaseMeta duration={project.duration} stack={project.techStack.join(", ")} />
 
-          <div className="drawer-section">
-            <h2>Features</h2>
-            <ul>
-              {project.features.map((feature) => (
-                <li key={feature}>{feature}</li>
-              ))}
-            </ul>
-          </div>
+          <DrawerSection title="Features" items={project.features} />
 
-          <a className="button primary" href={project.href} target="_blank" rel="noopener noreferrer">
-            Open Live Project
-          </a>
+          <Button variant="editorial-primary" size="pill" asChild>
+            <a href={project.href} target="_blank" rel="noopener noreferrer">
+              Open Live Project
+            </a>
+          </Button>
         </aside>
       </section>
     </main>

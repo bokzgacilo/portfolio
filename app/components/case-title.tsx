@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 
+import { caseStudy } from "./editorial";
+
 const COMPACT = "(max-width: 900px)";
 const STILL = "(prefers-reduced-motion: reduce)";
 
@@ -24,7 +26,7 @@ export default function CaseTitle({ title }: CaseTitleProps) {
     if (!anchor || !heading) return;
 
     const target = document.querySelector<HTMLElement>("[data-case-title-target]");
-    const details = target?.closest<HTMLElement>(".case-details");
+    const details = target?.closest<HTMLElement>("[data-case-details]");
     if (!target || !details) return;
 
     const compact = window.matchMedia(COMPACT);
@@ -141,8 +143,10 @@ export default function CaseTitle({ title }: CaseTitleProps) {
   }, []);
 
   return (
-    <div className="case-title-anchor" ref={anchorRef}>
-      <h1 ref={headingRef}>{title}</h1>
+    <div className="mb-[1.2rem]" ref={anchorRef}>
+      <h1 className={caseStudy.title} ref={headingRef}>
+        {title}
+      </h1>
     </div>
   );
 }

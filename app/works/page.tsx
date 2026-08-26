@@ -1,3 +1,4 @@
+import { PageHero, SubPage } from "../components/editorial";
 import { WorkShowcase } from "../components/work-showcase";
 
 export const metadata = {
@@ -7,14 +8,13 @@ export const metadata = {
 
 export default function WorksPage() {
   return (
-    <main className="subpage works-page">
-      <section className="subpage-hero">
-        <p className="eyebrow">Works</p>
-        <h1>Project showcase.</h1>
-        <p>Browse selected builds by type, tag, and technology. Open each project for a fuller PDP-style view.</p>
-      </section>
+    <SubPage>
+      <PageHero eyebrow="Works" title="Project showcase.">
+        Browse selected builds by type, tag, and technology. Open each project for
+        a fuller PDP-style view.
+      </PageHero>
 
       <WorkShowcase />
-    </main>
+    </SubPage>
   );
 }

@@ -1,3 +1,13 @@
+import {
+  Kicker,
+  ListingGrid,
+  ListingItem,
+  ListingTitle,
+  PageHero,
+  SubPage,
+  TextLink,
+} from "../components/editorial";
+
 const blogs = [
   {
     title: "Integrating Salesforce CRM Leads with a Next.js Page Router App",
@@ -9,25 +19,23 @@ const blogs = [
 
 export default function BlogsPage() {
   return (
-    <main className="subpage">
-      <section className="subpage-hero">
-        <p className="eyebrow">Blogs</p>
-        <h1>Notes from real integrations.</h1>
-        <p>Technical writing and implementation notes from project work.</p>
-      </section>
+    <SubPage>
+      <PageHero eyebrow="Blogs" title="Notes from real integrations.">
+        Technical writing and implementation notes from project work.
+      </PageHero>
 
-      <section className="listing-grid single" aria-label="Blogs">
+      <ListingGrid single aria-label="Blogs">
         {blogs.map((blog) => (
-          <article className="listing-item" key={blog.href}>
-            <span className="kicker">{blog.source}</span>
-            <h2>{blog.title}</h2>
-            <p>{blog.description}</p>
-            <a className="text-link" href={blog.href} target="_blank" rel="noopener noreferrer">
+          <ListingItem key={blog.href}>
+            <Kicker>{blog.source}</Kicker>
+            <ListingTitle className="mt-2">{blog.title}</ListingTitle>
+            <p className="text-muted-foreground">{blog.description}</p>
+            <TextLink href={blog.href} target="_blank" rel="noopener noreferrer">
               Read blog
-            </a>
-          </article>
+            </TextLink>
+          </ListingItem>
         ))}
-      </section>
-    </main>
+      </ListingGrid>
+    </SubPage>
   );
 }

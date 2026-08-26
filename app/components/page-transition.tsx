@@ -11,7 +11,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
-        className="page-transition"
+        className="relative min-h-[100svh]"
         key={pathname}
         initial={shouldReduceMotion ? false : { opacity: 0, y: 18, filter: "blur(6px)" }}
         animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -19,7 +19,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
         transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
       >
         <motion.div
-          className="route-wipe"
+          className="pointer-events-none fixed inset-x-0 top-0 z-9 h-[3px] origin-left bg-foreground"
           aria-hidden="true"
           initial={shouldReduceMotion ? false : { scaleX: 0, opacity: 0.8 }}
           animate={shouldReduceMotion ? { opacity: 0 } : { scaleX: 1, opacity: 0 }}

@@ -1,3 +1,14 @@
+import { Badge } from "@/components/ui/badge";
+
+import {
+  ListingGrid,
+  ListingItem,
+  ListingTitle,
+  PageHero,
+  SubPage,
+  TextLink,
+} from "../components/editorial";
+
 const tools = [
   {
     title: "nowtpad",
@@ -21,29 +32,29 @@ const tools = [
 
 export default function ToolsPage() {
   return (
-    <main className="subpage">
-      <section className="subpage-hero">
-        <p className="eyebrow">Tools</p>
-        <h1>Useful builds, shipped cleanly.</h1>
-        <p>Selected web tools and product experiments from my portfolio.</p>
-      </section>
+    <SubPage>
+      <PageHero eyebrow="Tools" title="Useful builds, shipped cleanly.">
+        Selected web tools and product experiments from my portfolio.
+      </PageHero>
 
-      <section className="listing-grid" aria-label="Tools">
+      <ListingGrid aria-label="Tools">
         {tools.map((tool) => (
-          <article className="listing-item" key={tool.href}>
-            <h2>{tool.title}</h2>
-            <p>{tool.description}</p>
-            <div className="tag-row">
+          <ListingItem key={tool.href}>
+            <ListingTitle>{tool.title}</ListingTitle>
+            <p className="text-muted-foreground">{tool.description}</p>
+            <div className="mt-4 flex flex-wrap gap-[0.7rem]">
               {tool.tags.map((tag) => (
-                <span key={tag}>{tag}</span>
+                <Badge variant="chip" key={tag}>
+                  {tag}
+                </Badge>
               ))}
             </div>
-            <a className="text-link" href={tool.href} target="_blank" rel="noopener noreferrer">
+            <TextLink href={tool.href} target="_blank" rel="noopener noreferrer">
               Open tool
-            </a>
-          </article>
+            </TextLink>
+          </ListingItem>
         ))}
-      </section>
-    </main>
+      </ListingGrid>
+    </SubPage>
   );
 }

@@ -19,7 +19,7 @@ const fraunces = Fraunces({
 
 const dmMono = DM_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-dm-mono",
   weight: ["300", "400", "500"],
   display: "swap",
 });
@@ -105,8 +105,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${fraunces.variable} ${dmMono.variable}`}>
-      <body>
+    <html
+      lang="en"
+      className={`${inter.variable} ${fraunces.variable} ${dmMono.variable}`}
+    >
+      <body className="antialiased">
         <SiteHeader />
         <PageTransition>{children}</PageTransition>
         <Analytics />

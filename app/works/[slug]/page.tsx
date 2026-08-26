@@ -1,5 +1,15 @@
 import { notFound } from "next/navigation";
+
+import { Button } from "@/components/ui/button";
+
 import CaseTitle from "../../components/case-title";
+import {
+  caseStudy,
+  CaseMeta,
+  DrawerSection,
+  Eyebrow,
+  TagRow,
+} from "../../components/editorial";
 import { getProjectBySlug, projects } from "../../data/projects";
 
 export function generateStaticParams() {
@@ -35,54 +45,38 @@ export default async function WorkDetailPage({ params }: WorkPageProps) {
   }
 
   return (
-    <main className="case-study">
-      <section className="case-hero">
-        <p className="eyebrow">{project.type}</p>
+    <main className={caseStudy.page}>
+      <section className={caseStudy.hero}>
+        <Eyebrow>{project.type}</Eyebrow>
         <CaseTitle title={project.title} />
-        <p>{project.description}</p>
-        <div className="tag-row">
-          {project.tags.map((tag) => (
-            <span key={tag}>{tag}</span>
-          ))}
-        </div>
+        <p className={caseStudy.lede}>{project.description}</p>
+        <TagRow className="mt-4" tags={project.tags} />
       </section>
 
-      <section className="case-layout">
-        <div className="case-gallery">
+      <section className={caseStudy.layout}>
+        <div className={caseStudy.gallery}>
           {project.gallery.map((image) => (
-            <img key={image} src={image} alt={project.alt} />
+            <img className={caseStudy.galleryImage} key={image} src={image} alt={project.alt} />
           ))}
         </div>
 
-        <aside className="case-details">
-          <div className="case-sticky-title" aria-hidden="true">
-            <span>{project.type}</span>
-            <div className="case-title-target" data-case-title-target />
+        <aside className={caseStudy.details} data-case-details>
+          <div className={caseStudy.stickyTitle} aria-hidden="true">
+            <span className="case-sticky-label mono-label text-brand transition-opacity duration-[450ms]">
+              {project.type}
+            </span>
+            <div className={caseStudy.stickyTarget} data-case-title-target />
           </div>
 
-          <dl className="project-meta">
-            <div>
-              <dt>Duration</dt>
-              <dd>{project.duration}</dd>
-            </div>
-            <div>
-              <dt>Tech stack</dt>
-              <dd>{project.techStack.join(", ")}</dd>
-            </div>
-          </dl>
+          <CaseMeta duration={project.duration} stack={project.techStack.join(", ")} />
 
-          <div className="drawer-section">
-            <h2>Features</h2>
-            <ul>
-              {project.features.map((feature) => (
-                <li key={feature}>{feature}</li>
-              ))}
-            </ul>
-          </div>
+          <DrawerSection title="Features" items={project.features} />
 
-          <a className="button primary" href={project.href} target="_blank" rel="noopener noreferrer">
-            Open Live Project
-          </a>
+          <Button variant="editorial-primary" size="pill" asChild>
+            <a href={project.href} target="_blank" rel="noopener noreferrer">
+              Open Live Project
+            </a>
+          </Button>
         </aside>
       </section>
     </main>
