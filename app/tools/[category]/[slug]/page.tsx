@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 import { Eyebrow, measure } from "../../../components/editorial";
+import { breadcrumbs, JsonLd } from "../../../components/json-ld";
+import { absoluteUrl } from "../../../data/site";
 import { categoryLabel, getTool, toolHref, tools } from "../../data";
 
 /** Tools with a hand-built route of their own are excluded: a static segment
@@ -32,6 +34,13 @@ export async function generateMetadata({ params }: ToolPageProps) {
   return {
     title: `${tool.title} | Free Tool`,
     description: tool.description,
+    alternates: { canonical: toolHref(tool) },
+    openGraph: {
+      type: "website",
+      title: `${tool.title} | Free Tool`,
+      description: tool.description,
+      url: absoluteUrl(toolHref(tool)),
+    },
   };
 }
 
@@ -49,6 +58,36 @@ export default async function ToolPage({ params }: ToolPageProps) {
 
   return (
     <main className={`${measure.text} pt-[clamp(8rem,14vw,11rem)] pb-[clamp(4rem,8vw,7rem)]`}>
+      <JsonLd
+        data={[
+          {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "@id": `${absoluteUrl(toolHref(tool))}#tool`,
+            name: tool.title,
+            url: absoluteUrl(toolHref(tool)),
+            description: tool.description,
+            applicationCategory: `${categoryLabel(tool.category)} tool`,
+            browserRequirements: "Requires a modern web browser. No signup.",
+            operatingSystem: "Any",
+            keywords: [...tool.tags].join(", "),
+            /* "soon" tools are real routes with nothing to run yet -- saying so
+               beats letting a crawler infer a broken tool. */
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+            availability:
+              tool.status === "live"
+                ? "https://schema.org/InStock"
+                : "https://schema.org/PreOrder",
+            author: { "@id": `${absoluteUrl("/")}#person` },
+          },
+          breadcrumbs([
+            ["Home", "/"],
+            ["Tools", "/tools"],
+            [tool.title, toolHref(tool)],
+          ]),
+        ]}
+      />
+
       <section className="mb-[clamp(2rem,5vw,3.5rem)] max-w-[820px]">
         <Eyebrow>
           <Link className="underline decoration-border underline-offset-[0.35em]" href="/tools">

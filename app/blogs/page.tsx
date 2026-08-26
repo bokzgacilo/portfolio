@@ -7,19 +7,46 @@ import {
   SubPage,
   TextLink,
 } from "../components/editorial";
+import { breadcrumbs, JsonLd } from "../components/json-ld";
+import { blogs } from "../data/blogs";
+import { absoluteUrl } from "../data/site";
 
-const blogs = [
-  {
-    title: "Integrating Salesforce CRM Leads with a Next.js Page Router App",
-    href: "https://medium.com/@bokzgacilo/integrating-salesforce-crm-leads-with-a-next-js-page-router-app-7b29bac20ea9",
-    description: "A technical walkthrough for connecting Salesforce CRM lead capture with a Next.js application.",
-    source: "Medium",
-  },
-];
+export const metadata = {
+  title: "Blogs | Ariel Jericko Gacilo",
+  description:
+    "Technical writing and implementation notes from real project work — Salesforce CRM lead capture, Next.js integrations, and deployment.",
+  alternates: { canonical: "/blogs" },
+};
+
+
 
 export default function BlogsPage() {
   return (
     <SubPage>
+      <JsonLd
+        data={[
+          {
+            "@context": "https://schema.org",
+            "@type": "Blog",
+            "@id": `${absoluteUrl("/blogs")}#blog`,
+            url: absoluteUrl("/blogs"),
+            name: "Notes from real integrations",
+            author: { "@id": `${absoluteUrl("/")}#person` },
+            blogPost: blogs.map((blog) => ({
+              "@type": "BlogPosting",
+              headline: blog.title,
+              url: blog.href,
+              description: blog.description,
+              author: { "@id": `${absoluteUrl("/")}#person` },
+            })),
+          },
+          breadcrumbs([
+            ["Home", "/"],
+            ["Blogs", "/blogs"],
+          ]),
+        ]}
+      />
+
       <PageHero eyebrow="Blogs" title="Notes from real integrations.">
         Technical writing and implementation notes from project work.
       </PageHero>

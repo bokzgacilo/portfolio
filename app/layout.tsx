@@ -55,6 +55,13 @@ export const metadata: Metadata = {
       en: "/",
       "x-default": "/",
     },
+    /* Points agents at the plain-text mirrors before they parse the HTML. */
+    types: {
+      "text/plain": [
+        { url: "/llms.txt", title: "llms.txt — site summary for AI agents" },
+        { url: "/llms-full.txt", title: "llms-full.txt — full site content" },
+      ],
+    },
   },
   icons: {
     icon: "/favicon.svg",

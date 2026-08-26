@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 
 import { Eyebrow, measure } from "../../../components/editorial";
+import { breadcrumbs, JsonLd } from "../../../components/json-ld";
+import { absoluteUrl } from "../../../data/site";
 import { getTool } from "../../data";
 import { ImageCompressor } from "./compressor";
 
@@ -14,11 +16,50 @@ export const metadata = {
   title: "Image Compressor — Compress to a Target File Size | Free Tool",
   description:
     "Compress JPG, PNG, WebP, and AVIF images down to an exact target file size. Runs in your browser, no signup.",
+  alternates: { canonical: "/tools/image/image-compressor" },
+  openGraph: {
+    type: "website",
+    title: "Image Compressor — Compress to a Target File Size | Free Tool",
+    description:
+      "Compress JPG, PNG, WebP, and AVIF images down to an exact target file size. Runs in your browser, no signup.",
+    url: "https://www.bokzgacilo.com/tools/image/image-compressor",
+  },
 };
 
 export default function ImageCompressorPage() {
   return (
     <main className={`${measure.text} pt-[clamp(8rem,14vw,11rem)] pb-[clamp(4rem,8vw,7rem)]`}>
+      <JsonLd
+        data={[
+          {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "@id": `${absoluteUrl("/tools/image/image-compressor")}#tool`,
+            name: "Image Compressor",
+            url: absoluteUrl("/tools/image/image-compressor"),
+            description:
+              "Compress JPG, PNG, WebP, and AVIF images down to an exact target file size. Compression runs in the browser; nothing is uploaded unless you download the result.",
+            applicationCategory: "Image tool",
+            browserRequirements: "Requires a modern web browser. No signup.",
+            operatingSystem: "Any",
+            featureList: [
+              "Target an exact output file size",
+              "JPG, PNG, WebP, and AVIF input up to 40 MB",
+              "Client-side compression",
+              "Download with a size and savings receipt",
+            ],
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+            availability: "https://schema.org/InStock",
+            author: { "@id": `${absoluteUrl("/")}#person` },
+          },
+          breadcrumbs([
+            ["Home", "/"],
+            ["Tools", "/tools"],
+            ["Image Compressor", "/tools/image/image-compressor"],
+          ]),
+        ]}
+      />
+
       <section className="mb-[clamp(2rem,5vw,3.5rem)] max-w-[820px]">
         <Eyebrow>
           <Link className="underline decoration-border underline-offset-[0.35em]" href="/tools">

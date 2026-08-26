@@ -245,7 +245,7 @@ function MobileDrawer({
 
   return (
     <div
-      className={`fixed inset-0 z-50 hidden transition-[visibility] duration-300 max-[900px]:block ${
+      className={`fixed inset-x-0 top-0 z-50 hidden h-[100dvh] transition-[visibility] duration-300 max-[900px]:block ${
         isOpen ? "visible" : "invisible"
       }`}
       aria-hidden={!isOpen}
@@ -260,14 +260,14 @@ function MobileDrawer({
       />
 
       <aside
-        className={`absolute top-0 right-0 h-full w-[min(88vw,420px)] overflow-hidden border-l border-border bg-paper shadow-mega transition-transform duration-300 ease-out ${
+        className={`absolute inset-y-0 right-0 flex w-[95%] flex-col overflow-hidden border-l border-border bg-paper shadow-mega transition-transform duration-300 ease-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
         role="dialog"
         aria-modal="true"
         aria-label="Mobile menu"
       >
-        <div className="flex min-h-16 items-center justify-between border-b border-border px-5">
+        <div className="flex min-h-16 shrink-0 items-center justify-between border-b border-border px-5">
           <Link
             className="display text-[1.05rem] font-[650] no-underline"
             href="/"
@@ -286,7 +286,7 @@ function MobileDrawer({
           </button>
         </div>
 
-        <nav className="grid px-5 py-5" aria-label="Mobile navigation">
+        <nav className="grid min-h-0 flex-1 content-start overflow-y-auto px-5 py-5" aria-label="Mobile navigation">
           <button
             className="flex min-h-14 items-center justify-between border-b border-border text-left mono-label text-muted-foreground"
             type="button"
@@ -313,14 +313,14 @@ function MobileDrawer({
         </nav>
 
         <div
-          className={`absolute inset-0 bg-paper transition-transform duration-300 ease-out ${
+          className={`absolute inset-y-0 right-0 w-[90%] border-l border-border bg-paper shadow-mega transition-transform duration-300 ease-out ${
             panelContent ? "translate-x-0" : "translate-x-full"
           }`}
           aria-hidden={!panelContent}
         >
           {panelContent ? (
             <div className="flex h-full flex-col">
-              <div className="flex min-h-16 items-center justify-between border-b border-border px-5">
+              <div className="flex min-h-16 shrink-0 items-center justify-between border-b border-border px-5">
                 <button
                   className="inline-flex items-center gap-2 mono-label text-muted-foreground"
                   type="button"
@@ -339,7 +339,7 @@ function MobileDrawer({
                 </button>
               </div>
 
-              <div className="min-h-0 overflow-y-auto px-5 py-5">
+              <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5">
                 <Link
                   className="display mb-6 block text-[2.25rem] leading-none text-foreground no-underline"
                   href={panelContent.href}
@@ -440,54 +440,59 @@ export function SiteHeader() {
   }, [isMobileMenuOpen]);
 
   return (
-    <header className="print-hidden fixed inset-x-0 top-0 z-10 flex items-center justify-between gap-8 border-b border-[rgb(216_209_197/0.7)] bg-[rgb(247_245_240/0.82)] px-[clamp(1.25rem,4vw,4rem)] py-4 backdrop-blur-[18px] max-[900px]:gap-4 max-[560px]:absolute">
-      <Link
-        className="display text-[1.05rem] font-[650] whitespace-nowrap no-underline max-[900px]:text-[1.2rem]"
-        href="/"
-        aria-label="Ariel Jericko Gacilo portfolio"
-      >
-        <span className="max-[900px]:hidden">Ariel Jericko Gacilo</span>
-        <span className="hidden max-[900px]:inline">AJG</span>
-      </Link>
-      <nav
-        className="flex flex-wrap justify-end gap-x-[0.6rem] gap-y-[0.35rem] max-[900px]:hidden"
-        aria-label="Primary navigation"
-      >
-        <NavDropdown
-          label="Tools"
-          href="/tools"
-          primary={tools.primary}
-          secondaryLabel="Services"
-          secondaryItems={tools.services}
-          featured={tools.featured}
-        />
-        <NavDropdown
-          label="Blogs"
-          href="/blogs"
-          primary={blogs.primary}
-          secondaryLabel="Topics"
-          secondaryItems={blogs.topics}
-          featured={blogs.featured}
-        />
-        <Link className={navLink} href="/contact">
-          Contact
+    <>
+      <header className="print-hidden fixed inset-x-0 top-0 z-10 flex items-center justify-between gap-8 border-b border-[rgb(216_209_197/0.7)] bg-[rgb(247_245_240/0.82)] px-[clamp(1.25rem,4vw,4rem)] py-4 backdrop-blur-[18px] max-[900px]:gap-4 max-[560px]:absolute">
+        <Link
+          className="display text-[1.05rem] font-[650] whitespace-nowrap no-underline max-[900px]:text-[1.2rem]"
+          href="/"
+          aria-label="Ariel Jericko Gacilo portfolio"
+        >
+          <span className="max-[900px]:hidden">Ariel Jericko Gacilo</span>
+          <span className="hidden max-[900px]:inline">AJG</span>
         </Link>
-      </nav>
-      <button
-        className="hidden size-10 place-items-center rounded-full border border-border bg-card text-foreground shadow-lift max-[900px]:grid"
-        type="button"
-        onClick={() => setIsMobileMenuOpen(true)}
-        aria-label="Open menu"
-        aria-expanded={isMobileMenuOpen}
-      >
-        <Menu className="size-4" strokeWidth={2} />
-      </button>
+        <nav
+          className="flex flex-wrap justify-end gap-x-[0.6rem] gap-y-[0.35rem] max-[900px]:hidden"
+          aria-label="Primary navigation"
+        >
+          <NavDropdown
+            label="Tools"
+            href="/tools"
+            primary={tools.primary}
+            secondaryLabel="Services"
+            secondaryItems={tools.services}
+            featured={tools.featured}
+          />
+          <NavDropdown
+            label="Blogs"
+            href="/blogs"
+            primary={blogs.primary}
+            secondaryLabel="Topics"
+            secondaryItems={blogs.topics}
+            featured={blogs.featured}
+          />
+          <Link className={navLink} href="/contact">
+            Contact
+          </Link>
+        </nav>
+        <button
+          className="hidden size-10 place-items-center rounded-full border border-border bg-card text-foreground shadow-lift max-[900px]:grid"
+          type="button"
+          onClick={() => setIsMobileMenuOpen(true)}
+          aria-label="Open menu"
+          aria-expanded={isMobileMenuOpen}
+        >
+          <Menu className="size-4" strokeWidth={2} />
+        </button>
+      </header>
+
+      {/* Sibling of <header> on purpose: the header's backdrop-blur creates a
+          containing block, so a fixed overlay nested inside it gets clipped. */}
       <MobileDrawer
         isOpen={isMobileMenuOpen}
         activePanel={activeMobilePanel}
         setActivePanel={setActiveMobilePanel}
         onClose={closeMobileMenu}
       />
-    </header>
+    </>
   );
 }

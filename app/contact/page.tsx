@@ -1,16 +1,13 @@
 import { Eyebrow, measure } from "../components/editorial";
+import { breadcrumbs, JsonLd } from "../components/json-ld";
+import { absoluteUrl, contactLinks, site } from "../data/site";
 import { ContactForm } from "./contact-form";
 
-const contactLinks = [
-  ["Email", "bokzgacilo@gmail.com", "mailto:bokzgacilo@gmail.com"],
-  ["Phone", "0976 222 0951", "tel:+639762220951"],
-  ["LinkedIn", "ariel-jericko-gacilo", "https://www.linkedin.com/in/ariel-jericko-gacilo/"],
-  ["GitHub", "bokzgacilo", "https://github.com/bokzgacilo"],
-] as const;
 
 export const metadata = {
   title: "Contact | Ariel Jericko Gacilo",
   description: "Start a conversation with Ariel Jericko Gacilo about web products, Shopify, integrations, automation, and launch support.",
+  alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {
@@ -18,6 +15,32 @@ export default function ContactPage() {
     <main
       className={`${measure.wide} pt-[clamp(8rem,14vw,11rem)] pb-[clamp(4rem,8vw,7rem)] max-[560px]:w-[calc(100%_-_2.5rem)]`}
     >
+      <JsonLd
+        data={[
+          {
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            "@id": `${absoluteUrl("/contact")}#contact`,
+            url: absoluteUrl("/contact"),
+            name: "Contact Ariel Jericko Gacilo",
+            description: site.engagement,
+            mainEntity: {
+              "@id": `${absoluteUrl("/")}#person`,
+              "@type": "Person",
+              name: site.name,
+              email: "mailto:bokzgacilo@gmail.com",
+              telephone: "+639762220951",
+              areaServed: "Worldwide",
+              availableLanguage: ["English", "Filipino"],
+            },
+          },
+          breadcrumbs([
+            ["Home", "/"],
+            ["Contact", "/contact"],
+          ]),
+        ]}
+      />
+
       <section className="grid grid-cols-2 items-start gap-[clamp(2.5rem,5vw,4.5rem)] max-[900px]:grid-cols-1">
         <div className="reveal sticky top-24 max-[900px]:static">
           <Eyebrow>Contact</Eyebrow>

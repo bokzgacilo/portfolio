@@ -10,7 +10,9 @@ import {
   Eyebrow,
   TagRow,
 } from "../../components/editorial";
+import { breadcrumbs, JsonLd } from "../../components/json-ld";
 import { getProjectBySlug, projects } from "../../data/projects";
+import { absoluteUrl } from "../../data/site";
 
 export function generateStaticParams() {
   return projects.map((project) => ({
@@ -33,6 +35,14 @@ export async function generateMetadata({ params }: WorkPageProps) {
   return {
     title: `${project.title} | Ariel Jericko Gacilo`,
     description: project.description,
+    alternates: { canonical: `/works/${project.slug}` },
+    openGraph: {
+      type: "article",
+      title: `${project.title} | Ariel Jericko Gacilo`,
+      description: project.description,
+      url: absoluteUrl(`/works/${project.slug}`),
+      images: [{ url: project.image, alt: project.alt }],
+    },
   };
 }
 
@@ -46,6 +56,30 @@ export default async function WorkDetailPage({ params }: WorkPageProps) {
 
   return (
     <main className={caseStudy.page}>
+      <JsonLd
+        data={[
+          {
+            "@context": "https://schema.org",
+            "@type": "CreativeWork",
+            "@id": `${absoluteUrl(`/works/${project.slug}`)}#work`,
+            name: project.title,
+            url: absoluteUrl(`/works/${project.slug}`),
+            description: project.description,
+            image: absoluteUrl(project.image),
+            genre: project.type,
+            keywords: [...project.tags].join(", "),
+            about: [...project.techStack].join(", "),
+            sameAs: project.href,
+            creator: { "@id": `${absoluteUrl("/")}#person` },
+          },
+          breadcrumbs([
+            ["Home", "/"],
+            ["Works", "/works"],
+            [project.title, `/works/${project.slug}`],
+          ]),
+        ]}
+      />
+
       <section className={caseStudy.hero}>
         <Eyebrow>{project.type}</Eyebrow>
         <CaseTitle title={project.title} />

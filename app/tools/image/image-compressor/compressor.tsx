@@ -235,17 +235,17 @@ export function ImageCompressor() {
       : `No saving · ${formatBytes(Math.abs(savedBytes))} larger`;
 
   return (
-    <div className="grid grid-cols-[minmax(0,1.02fr)_minmax(300px,0.98fr)] border-t border-l border-border max-[900px]:grid-cols-1">
+    <div className="grid grid-cols-[minmax(0,1.02fr)_minmax(300px,0.98fr)] border-t border-l border-border max-[900px]:grid-cols-[minmax(0,1fr)]">
       {/* ---------------------------------------------------------------- */}
       {/* Canvas: dropzone, preview, or receipt                            */}
       {/* ---------------------------------------------------------------- */}
-      <div className="border-r border-b border-border bg-[rgb(255_253_248/0.34)] p-[clamp(1rem,2.5vw,1.6rem)]">
+      <div className="min-w-0 border-r border-b border-border bg-[rgb(255_253_248/0.34)] p-[clamp(1rem,2.5vw,1.6rem)]">
         {phase === "archived" && receipt ? (
-          <div className="grid min-h-[340px] content-center justify-items-start gap-4">
+          <div className="grid min-h-[340px] min-w-0 content-center justify-items-start gap-4">
             <span className="mono-label rounded-full border border-border bg-card px-[0.62rem] py-[0.32rem] text-brand-dark">
               Archived &amp; downloaded
             </span>
-            <h2 className="display text-[clamp(1.6rem,3vw,2.3rem)] leading-[1.05]">
+            <h2 className="display text-[clamp(1.6rem,3vw,2.3rem)] leading-[1.05] [overflow-wrap:anywhere]">
               {receipt.name} is in your downloads.
             </h2>
             <p className="max-w-[44ch] text-muted-foreground">
@@ -259,10 +259,10 @@ export function ImageCompressor() {
           </div>
         ) : sourceUrl ? (
           <div className="grid gap-4">
-            <div className="relative grid min-h-[300px] place-items-center overflow-hidden border border-border bg-card">
+            <div className="relative grid min-h-[220px] w-full min-w-0 place-items-center overflow-hidden border border-border bg-card max-[900px]:min-h-[260px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                className="block max-h-[420px] w-full object-contain"
+                className="block max-h-[420px] w-full max-w-full object-contain max-[900px]:max-h-[50vh]"
                 src={resultUrl ?? sourceUrl}
                 alt={result ? "Compressed result preview" : "Selected image preview"}
               />
@@ -271,7 +271,7 @@ export function ImageCompressor() {
               </span>
             </div>
             <div className="flex items-center justify-between gap-4">
-              <span className="truncate text-[0.95rem] font-semibold text-foreground">
+              <span className="min-w-0 truncate text-[0.95rem] font-semibold text-foreground">
                 {file?.name}
               </span>
               <button
@@ -331,7 +331,7 @@ export function ImageCompressor() {
       {/* ---------------------------------------------------------------- */}
       {/* Settings, stats, and the download CTA                            */}
       {/* ---------------------------------------------------------------- */}
-      <aside className="grid content-start gap-[1.5rem] border-r border-b border-border p-[clamp(1rem,2.5vw,1.6rem)]">
+      <aside className="grid min-w-0 content-start gap-[1.5rem] border-r border-b border-border p-[clamp(1rem,2.5vw,1.6rem)]">
         <div className="grid gap-[1.1rem]">
           <h2 className="text-[0.95rem] font-extrabold text-foreground">
             Compression settings
@@ -451,7 +451,7 @@ export function ImageCompressor() {
                   ] as const
                 ).map(([label, value]) => (
                   <div
-                    className="flex items-baseline justify-between gap-4 border-b border-border pb-[0.55rem]"
+                    className="flex min-w-0 items-baseline justify-between gap-4 border-b border-border pb-[0.55rem]"
                     key={label}
                   >
                     <dt className="mono-label text-muted-foreground">{label}</dt>
