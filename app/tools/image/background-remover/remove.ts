@@ -23,6 +23,8 @@ export const MAX_DIMENSION = 2000;
    there should never look like a failure. */
 const REMOVE_TIMEOUT_MS = 120_000;
 const HEALTH_TIMEOUT_MS = 75_000;
+const PRODUCTION_API_BASE = "https://api.bokzgacilo.com";
+const DEVELOPMENT_API_BASE = "http://127.0.0.1:8000";
 
 export type Cutout = {
   blob: Blob;
@@ -37,11 +39,15 @@ export type Cutout = {
   downscaled: boolean;
 };
 
-/** Null when the deployment has no API configured, so the UI can say so
- *  instead of firing requests at `undefined/api/remove-background`. */
+/** Production should always call the Render custom domain. Local development
+ *  can use `.env`, falling back to the FastAPI server on port 8000. */
 export function apiBase() {
+  if (process.env.NODE_ENV === "production") {
+    return PRODUCTION_API_BASE;
+  }
+
   const raw = process.env.NEXT_PUBLIC_BACKGROUND_REMOVER_API?.trim();
-  return raw ? raw.replace(/\/+$/, "") : null;
+  return (raw || DEVELOPMENT_API_BASE).replace(/\/+$/, "");
 }
 
 function headerNumber(response: Response, name: string, fallback = 0) {
