@@ -9,28 +9,26 @@ import { getAdjacentTools, getTool } from "../../data";
 import { ToolFaqs } from "../../tool-faqs";
 import { ToolFeedbackForm } from "../../tool-feedback-form";
 import { ToolPagination } from "../../tool-pagination";
-import { ImageCompressor } from "./compressor";
+import { ImageResizer } from "./resizer";
 
-/* This static route shadows /tools/[category]/[slug] for this one tool, so the
-   copy still comes from the shared registry and cannot drift from the hub. */
-const tool = getTool("image", "image-compressor");
-const adjacent = getAdjacentTools("image", "image-compressor");
+const tool = getTool("image", "image-resizer");
+const adjacent = getAdjacentTools("image", "image-resizer");
 
 export const metadata = {
-  title: "Image Compressor — Compress to a Target File Size | Free Tool",
+  title: "Image Resizer — Resize and Crop Images Online | Free Tool",
   description:
-    "Compress JPG, PNG, WebP, and AVIF images down to an exact target file size. Runs in your browser, no signup.",
-  alternates: { canonical: "/tools/image/image-compressor" },
+    "Resize JPG, PNG, WebP, and AVIF images on a white canvas. Set exact dimensions, zoom and position the image, then download locally.",
+  alternates: { canonical: "/tools/image/image-resizer" },
   openGraph: {
     type: "website",
-    title: "Image Compressor — Compress to a Target File Size | Free Tool",
+    title: "Image Resizer — Resize and Crop Images Online | Free Tool",
     description:
-      "Compress JPG, PNG, WebP, and AVIF images down to an exact target file size. Runs in your browser, no signup.",
-    url: "https://www.bokzgacilo.com/tools/image/image-compressor",
+      "Resize JPG, PNG, WebP, and AVIF images on a white canvas. Set exact dimensions, zoom and position the image, then download locally.",
+    url: "https://www.bokzgacilo.com/tools/image/image-resizer",
   },
 };
 
-export default function ImageCompressorPage() {
+export default function ImageResizerPage() {
   return (
     <main className={`${measure.text} pt-[clamp(8rem,14vw,11rem)] pb-[clamp(4rem,8vw,7rem)]`}>
       <JsonLd
@@ -38,19 +36,20 @@ export default function ImageCompressorPage() {
           {
             "@context": "https://schema.org",
             "@type": "WebApplication",
-            "@id": `${absoluteUrl("/tools/image/image-compressor")}#tool`,
-            name: "Image Compressor",
-            url: absoluteUrl("/tools/image/image-compressor"),
+            "@id": `${absoluteUrl("/tools/image/image-resizer")}#tool`,
+            name: "Image Resizer",
+            url: absoluteUrl("/tools/image/image-resizer"),
             description:
-              "Compress JPG, PNG, WebP, and AVIF images down to an exact target file size. Compression runs in the browser; nothing is uploaded unless you download the result.",
+              "Resize JPG, PNG, WebP, and AVIF images on a white canvas. The resize runs locally in the browser; nothing is uploaded.",
             applicationCategory: "Image tool",
             browserRequirements: "Requires a modern web browser. No signup.",
             operatingSystem: "Any",
             featureList: [
-              "Target an exact output file size",
-              "JPG, PNG, WebP, and AVIF input up to 40 MB",
-              "Client-side compression",
-              "Download with a size and savings receipt",
+              "Resize to exact width and height",
+              "Common aspect-ratio templates",
+              "Drag and zoom the image layer inside the canvas",
+              "Common social, avatar, and HD presets",
+              "PNG, JPEG, and WebP output",
             ],
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
             availability: "https://schema.org/InStock",
@@ -59,7 +58,7 @@ export default function ImageCompressorPage() {
           breadcrumbs([
             ["Home", "/"],
             ["Tools", "/tools"],
-            ["Image Compressor", "/tools/image/image-compressor"],
+            ["Image Resizer", "/tools/image/image-resizer"],
           ]),
         ]}
       />
@@ -72,15 +71,15 @@ export default function ImageCompressorPage() {
           / Image
         </Eyebrow>
         <h1 className="display mb-[1.2rem] text-[clamp(2.6rem,6vw,5rem)] leading-[0.94]">
-          Image Compressor
+          Image Resizer
         </h1>
         <p className="max-w-[620px] text-[clamp(1rem,1.25vw,1.16rem)] text-muted-foreground">
-          Name a file size and this hunts for the highest quality that fits
-          under it. Compression happens in your browser — the image is only
-          uploaded if you choose to download it.
+          Set the exact white canvas you need, then drag and zoom the image
+          layer inside it. Empty canvas space stays white in the downloaded
+          file.
         </p>
         <div className="mt-5 flex flex-wrap gap-[0.7rem]">
-          {(tool?.tags ?? ["Optimize", "JPG", "WebP"]).map((tag) => (
+          {(tool?.tags ?? ["Resize", "Crop", "Batch"]).map((tag) => (
             <Badge variant="chip" key={tag}>
               {tag}
             </Badge>
@@ -88,22 +87,22 @@ export default function ImageCompressorPage() {
         </div>
       </section>
 
-      <ImageCompressor />
+      <ImageResizer />
 
       <section className="mt-[clamp(2.5rem,6vw,4rem)] grid grid-cols-3 gap-[clamp(1.5rem,4vw,3rem)] border-t border-border pt-[clamp(1.5rem,4vw,2.4rem)] max-[900px]:grid-cols-1">
         {(
           [
             [
-              "How it lands the target",
-              "It binary-searches encoder quality for the best-looking file that still fits your target. If quality alone cannot get there, it steps the resolution down and searches again.",
+              "Canvas first",
+              "Templates and custom width and height change the output canvas, while the image remains a movable layer inside it.",
             ],
             [
-              "What leaves your device",
-              "Nothing, until you press Download. Choosing a file, changing settings, and compressing all happen locally in your browser.",
+              "Exact dimensions",
+              "The downloaded file is encoded at the width and height you set, up to 8000 pixels on either side.",
             ],
             [
-              "What Download does",
-              "It saves the compressed file to your device and archives a copy to private storage, then clears it from this page.",
+              "White background",
+              "When the image does not cover the whole frame, the exposed canvas exports as clean white space.",
             ],
           ] as const
         ).map(([heading, body]) => (
@@ -116,8 +115,8 @@ export default function ImageCompressorPage() {
 
       <ToolFaqs faqs={tool?.faqs ?? []} />
       <ToolFeedbackForm
-        toolTitle="Image Compressor"
-        toolSlug="image-compressor"
+        toolTitle="Image Resizer"
+        toolSlug="image-resizer"
         toolCategory="image"
       />
       <ToolPagination previous={adjacent.previous} next={adjacent.next} />

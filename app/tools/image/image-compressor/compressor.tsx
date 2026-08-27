@@ -4,6 +4,8 @@ import { type CSSProperties, useCallback, useEffect, useRef, useState } from "re
 
 import { Button, ButtonArrow } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { recordToolOutput, usageKey } from "@/app/tools/usage";
+import { ToolDownloadSuccess } from "@/app/tools/tool-download-success";
 
 import {
   type CompressionResult,
@@ -138,6 +140,7 @@ export function ImageCompressor() {
       const next = await compressToTarget(file, targetBytes, format, setPass);
       setResult(next);
       setResultUrl(URL.createObjectURL(next.blob));
+      recordToolOutput(usageKey("image", "image-compressor"));
       setPhase("done");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Compression failed.");
@@ -241,22 +244,14 @@ export function ImageCompressor() {
       {/* ---------------------------------------------------------------- */}
       <div className="min-w-0 border-r border-b border-border bg-[rgb(255_253_248/0.34)] p-[clamp(1rem,2.5vw,1.6rem)]">
         {phase === "archived" && receipt ? (
-          <div className="grid min-h-[340px] min-w-0 content-center justify-items-start gap-4">
-            <span className="mono-label rounded-full border border-border bg-card px-[0.62rem] py-[0.32rem] text-brand-dark">
-              Archived &amp; downloaded
-            </span>
-            <h2 className="display text-[clamp(1.6rem,3vw,2.3rem)] leading-[1.05] [overflow-wrap:anywhere]">
-              {receipt.name} is in your downloads.
-            </h2>
-            <p className="max-w-[44ch] text-muted-foreground">
-              The compressed copy has been cleared from this page. It is no
-              longer available here — the archived original of this conversion
-              lives in private storage for retrieval.
-            </p>
-            <Button variant="editorial" size="pill" onClick={reset} className="mt-1">
-              Compress another
-            </Button>
-          </div>
+          <ToolDownloadSuccess
+            eyebrow="Archived & downloaded"
+            fileName={receipt.name}
+            toolName="Image Compressor"
+            body="The compressed copy has been cleared from this page. It is no longer available here; the archived original of this conversion lives in private storage for retrieval."
+            actionLabel="Compress another image"
+            onAction={reset}
+          />
         ) : sourceUrl ? (
           <div className="grid gap-4">
             <div className="relative grid min-h-[220px] w-full min-w-0 place-items-center overflow-hidden border border-border bg-card max-[900px]:min-h-[260px]">

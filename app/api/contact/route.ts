@@ -18,6 +18,8 @@ type ContactPayload = {
   idea?: string;
   subject?: string;
   source?: string;
+  feedbackType?: string;
+  tool?: string;
   websiteField?: string;
 };
 
@@ -52,13 +54,24 @@ function buildEmail(payload: ContactPayload) {
     ["Company / project", clean(payload.company)],
     ["Website", clean(payload.website)],
     ["Interest", clean(payload.interest)],
+    ["Feedback type", clean(payload.feedbackType)],
+    ["Tool", clean(payload.tool)],
     ["Source", clean(payload.source)],
   ].filter(([, value]) => value);
 
-  const title = kind === "tool-idea" ? "New Tool Idea" : "New Contact Inquiry";
+  const title =
+    kind === "tool-idea"
+      ? "New Tool Idea"
+      : kind === "tool-feedback"
+        ? "New Tool Feedback"
+        : "New Contact Inquiry";
   const subject =
     clean(payload.subject) ||
-    (kind === "tool-idea" ? `Tool idea from ${name || email}` : `Portfolio inquiry from ${name || email}`);
+    (kind === "tool-idea"
+      ? `Tool idea from ${name || email}`
+      : kind === "tool-feedback"
+        ? `Tool feedback from ${name || email}`
+        : `Portfolio inquiry from ${name || email}`);
 
   const htmlRows = rows
     .map(

@@ -14,7 +14,7 @@
    --brand, exposed as text-brand / border-brand.
 --------------------------------------------------------------------------- */
 :root {
-  --background: #f7f5f0;
+  --background: #f0f0f0;
   --foreground: #151412;
 
   --card: #fffdf8;

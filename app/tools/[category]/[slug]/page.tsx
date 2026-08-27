@@ -7,11 +7,16 @@ import { Button } from "@/components/ui/button";
 import { Eyebrow, measure } from "../../../components/editorial";
 import { breadcrumbs, JsonLd } from "../../../components/json-ld";
 import { absoluteUrl } from "../../../data/site";
-import { categoryLabel, getTool, toolHref, tools } from "../../data";
+import { categoryLabel, getAdjacentTools, getTool, toolHref, tools } from "../../data";
+import { ToolPagination } from "../../tool-pagination";
 
 /** Tools with a hand-built route of their own are excluded: a static segment
  *  wins over this dynamic one, so prerendering both would be wasted work. */
-const OWN_ROUTE = new Set(["image/image-compressor"]);
+const OWN_ROUTE = new Set([
+  "image/background-remover",
+  "image/image-compressor",
+  "image/image-resizer",
+]);
 
 export function generateStaticParams() {
   return tools
@@ -55,6 +60,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const related = tools
     .filter((item) => item.category === tool.category && item.slug !== tool.slug)
     .slice(0, 3);
+  const adjacent = getAdjacentTools(tool.category, tool.slug);
 
   return (
     <main className={`${measure.text} pt-[clamp(8rem,14vw,11rem)] pb-[clamp(4rem,8vw,7rem)]`}>
@@ -133,6 +139,8 @@ export default async function ToolPage({ params }: ToolPageProps) {
           </Button>
         </div>
       </section>
+
+      <ToolPagination previous={adjacent.previous} next={adjacent.next} />
 
       <section className="mt-[clamp(3rem,7vw,5rem)] border-t border-border pt-[clamp(1.5rem,4vw,2.4rem)]">
         <Eyebrow>More in {categoryLabel(tool.category)}</Eyebrow>

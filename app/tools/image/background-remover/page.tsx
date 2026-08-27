@@ -9,28 +9,30 @@ import { getAdjacentTools, getTool } from "../../data";
 import { ToolFaqs } from "../../tool-faqs";
 import { ToolFeedbackForm } from "../../tool-feedback-form";
 import { ToolPagination } from "../../tool-pagination";
-import { ImageCompressor } from "./compressor";
+import { BackgroundRemover } from "./remover";
 
 /* This static route shadows /tools/[category]/[slug] for this one tool, so the
    copy still comes from the shared registry and cannot drift from the hub. */
-const tool = getTool("image", "image-compressor");
-const adjacent = getAdjacentTools("image", "image-compressor");
+const tool = getTool("image", "background-remover");
+const adjacent = getAdjacentTools("image", "background-remover");
+
+const TITLE = "Background Remover — Transparent PNG Cutouts | Free Tool";
+const DESCRIPTION =
+  "Remove the background from a photo and download a transparent PNG. No signup, no watermark, nothing stored.";
 
 export const metadata = {
-  title: "Image Compressor — Compress to a Target File Size | Free Tool",
-  description:
-    "Compress JPG, PNG, WebP, and AVIF images down to an exact target file size. Runs in your browser, no signup.",
-  alternates: { canonical: "/tools/image/image-compressor" },
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/tools/image/background-remover" },
   openGraph: {
     type: "website",
-    title: "Image Compressor — Compress to a Target File Size | Free Tool",
-    description:
-      "Compress JPG, PNG, WebP, and AVIF images down to an exact target file size. Runs in your browser, no signup.",
-    url: "https://www.bokzgacilo.com/tools/image/image-compressor",
+    title: TITLE,
+    description: DESCRIPTION,
+    url: absoluteUrl("/tools/image/background-remover"),
   },
 };
 
-export default function ImageCompressorPage() {
+export default function BackgroundRemoverPage() {
   return (
     <main className={`${measure.text} pt-[clamp(8rem,14vw,11rem)] pb-[clamp(4rem,8vw,7rem)]`}>
       <JsonLd
@@ -38,19 +40,19 @@ export default function ImageCompressorPage() {
           {
             "@context": "https://schema.org",
             "@type": "WebApplication",
-            "@id": `${absoluteUrl("/tools/image/image-compressor")}#tool`,
-            name: "Image Compressor",
-            url: absoluteUrl("/tools/image/image-compressor"),
+            "@id": `${absoluteUrl("/tools/image/background-remover")}#tool`,
+            name: "Background Remover",
+            url: absoluteUrl("/tools/image/background-remover"),
             description:
-              "Compress JPG, PNG, WebP, and AVIF images down to an exact target file size. Compression runs in the browser; nothing is uploaded unless you download the result.",
+              "Remove the background from a JPG, PNG, or WebP photo and download a transparent PNG cutout. Masking runs on a FastAPI service that holds the upload in memory only; downloading archives the cutout to private storage.",
             applicationCategory: "Image tool",
             browserRequirements: "Requires a modern web browser. No signup.",
             operatingSystem: "Any",
             featureList: [
-              "Target an exact output file size",
-              "JPG, PNG, WebP, and AVIF input up to 40 MB",
-              "Client-side compression",
-              "Download with a size and savings receipt",
+              "Transparent PNG output",
+              "JPG, PNG, and WebP input up to 10 MB",
+              "Preview the cutout on checker, light, or dark",
+              "Download with a size and timing receipt",
             ],
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
             availability: "https://schema.org/InStock",
@@ -59,7 +61,7 @@ export default function ImageCompressorPage() {
           breadcrumbs([
             ["Home", "/"],
             ["Tools", "/tools"],
-            ["Image Compressor", "/tools/image/image-compressor"],
+            ["Background Remover", "/tools/image/background-remover"],
           ]),
         ]}
       />
@@ -72,15 +74,15 @@ export default function ImageCompressorPage() {
           / Image
         </Eyebrow>
         <h1 className="display mb-[1.2rem] text-[clamp(2.6rem,6vw,5rem)] leading-[0.94]">
-          Image Compressor
+          Background Remover
         </h1>
         <p className="max-w-[620px] text-[clamp(1rem,1.25vw,1.16rem)] text-muted-foreground">
-          Name a file size and this hunts for the highest quality that fits
-          under it. Compression happens in your browser — the image is only
-          uploaded if you choose to download it.
+          Drop in a photo and get the subject back on transparency. The cutout
+          is produced by a segmentation model on my own API, which holds your
+          upload in memory and never writes it to disk.
         </p>
         <div className="mt-5 flex flex-wrap gap-[0.7rem]">
-          {(tool?.tags ?? ["Optimize", "JPG", "WebP"]).map((tag) => (
+          {(tool?.tags ?? ["PNG", "Cutout", "AI"]).map((tag) => (
             <Badge variant="chip" key={tag}>
               {tag}
             </Badge>
@@ -88,22 +90,22 @@ export default function ImageCompressorPage() {
         </div>
       </section>
 
-      <ImageCompressor />
+      <BackgroundRemover />
 
       <section className="mt-[clamp(2.5rem,6vw,4rem)] grid grid-cols-3 gap-[clamp(1.5rem,4vw,3rem)] border-t border-border pt-[clamp(1.5rem,4vw,2.4rem)] max-[900px]:grid-cols-1">
         {(
           [
             [
-              "How it lands the target",
-              "It binary-searches encoder quality for the best-looking file that still fits your target. If quality alone cannot get there, it steps the resolution down and searches again.",
+              "How the cutout is made",
+              "A U^2-Net segmentation model predicts a per-pixel mask of the subject, and that mask becomes the alpha channel of a PNG. It is strongest on a clear single subject and weakest on fine hair, glass, and motion blur.",
             ],
             [
-              "What leaves your device",
-              "Nothing, until you press Download. Choosing a file, changing settings, and compressing all happen locally in your browser.",
+              "Where your file goes",
+              "The photo goes to the API once — this is the one tool here that cannot run in your browser. It is held in memory for the length of the request and no copy of your original is kept. Download then saves the PNG to your device, archives that cutout to private storage, and clears it from this page.",
             ],
             [
-              "What Download does",
-              "It saves the compressed file to your device and archives a copy to private storage, then clears it from this page.",
+              "Why the first try can be slow",
+              "The API runs on a free instance that sleeps when idle. The page pings it as soon as it loads, so the wake-up usually finishes while you are still choosing a file; if it does not, the first request can take up to a minute.",
             ],
           ] as const
         ).map(([heading, body]) => (
@@ -116,8 +118,8 @@ export default function ImageCompressorPage() {
 
       <ToolFaqs faqs={tool?.faqs ?? []} />
       <ToolFeedbackForm
-        toolTitle="Image Compressor"
-        toolSlug="image-compressor"
+        toolTitle="Background Remover"
+        toolSlug="background-remover"
         toolCategory="image"
       />
       <ToolPagination previous={adjacent.previous} next={adjacent.next} />
