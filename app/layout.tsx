@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Mono, Fraunces, Inter } from "next/font/google";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { PageTransition } from "./components/page-transition";
 import { SiteHeader } from "./components/site-header";
@@ -122,6 +123,12 @@ export default function RootLayout({
       <body className="antialiased">
         <SiteHeader />
         <PageTransition>{children}</PageTransition>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5701102950204692"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         <Analytics />
       </body>
     </html>
