@@ -128,8 +128,9 @@ export default function RootLayout({
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5701102950204692"
           crossOrigin="anonymous"
-          strategy="lazyOnload"
+          strategy="afterInteractive"
         />
+        <meta name="google-adsense-account" content="ca-pub-5701102950204692" />
       </Head>
       <body className="antialiased">
         <SiteChrome>{children}</SiteChrome>
