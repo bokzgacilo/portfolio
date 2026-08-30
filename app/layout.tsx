@@ -4,6 +4,7 @@ import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SiteChrome } from "./components/site-chrome";
 import "./globals.css";
+import Head from "next/head";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -122,14 +123,17 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${fraunces.variable} ${dmMono.variable}`}
     >
-      <body className="antialiased">
-        <SiteChrome>{children}</SiteChrome>
+      <Head>
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5701102950204692"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
+      </Head>
+      <body className="antialiased">
+        <SiteChrome>{children}</SiteChrome>
+
         <Analytics />
       </body>
     </html>
