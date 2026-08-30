@@ -131,14 +131,22 @@ export function SiteFooter() {
     <footer
       className={cn(
         measure.text,
-        "print-hidden flex justify-between gap-4 border-t border-border py-8",
+        "print-hidden flex justify-between gap-4 border-t border-border py-8 max-[640px]:flex-col",
         "text-[0.9rem] text-muted-foreground"
       )}
     >
       <span>Ariel Jericko Gacilo · {new Date().getFullYear()}</span>
-      <a className="font-bold" href="mailto:bokzgacilo@gmail.com">
-        bokzgacilo@gmail.com
-      </a>
+      <span className="flex flex-wrap gap-x-4 gap-y-2">
+        <a className="font-bold" href="mailto:bokzgacilo@gmail.com">
+          bokzgacilo@gmail.com
+        </a>
+        <a className="font-bold" href="/privacy-policy">
+          Privacy
+        </a>
+        <a className="font-bold" href="/terms-and-conditions">
+          Terms
+        </a>
+      </span>
     </footer>
   );
 }

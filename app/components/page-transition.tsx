@@ -11,7 +11,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
-        className="relative min-h-[100svh]"
+        className="relative min-h-[100svh] overflow-x-hidden"
         key={pathname}
         initial={shouldReduceMotion ? false : { opacity: 0, y: 18, filter: "blur(6px)" }}
         animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, filter: "blur(0px)" }}

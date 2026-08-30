@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { projects } from "./data/projects";
+import { storefronts } from "./storefronts/data";
 import { toolHref, tools } from "./tools/data";
 
 export const dynamic = "force-static";
@@ -19,8 +20,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: url("/"), changeFrequency: "monthly", priority: 1 },
     { url: url("/works"), changeFrequency: "monthly", priority: 0.9 },
     { url: url("/tools"), changeFrequency: "weekly", priority: 0.9 },
+    { url: url("/storefronts"), changeFrequency: "monthly", priority: 0.8 },
     { url: url("/contact"), changeFrequency: "yearly", priority: 0.8 },
     { url: url("/blogs"), changeFrequency: "monthly", priority: 0.6 },
+    { url: url("/privacy-policy"), changeFrequency: "yearly", priority: 0.3 },
+    { url: url("/terms-and-conditions"), changeFrequency: "yearly", priority: 0.3 },
   ];
 
   const workRoutes: MetadataRoute.Sitemap = projects.map((project) => ({
@@ -37,7 +41,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: tool.status === "live" ? 0.8 : 0.4,
   }));
 
-  return [...staticRoutes, ...workRoutes, ...toolRoutes].map((entry) => ({
+  const storefrontRoutes: MetadataRoute.Sitemap = storefronts.map((storefront) => ({
+    url: url(`/storefronts/${storefront.slug}`),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...workRoutes, ...toolRoutes, ...storefrontRoutes].map((entry) => ({
     ...entry,
     lastModified,
   }));

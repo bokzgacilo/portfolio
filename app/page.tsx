@@ -9,7 +9,6 @@ import {
   measure,
   Section,
   SectionHeader,
-  SiteFooter,
 } from "./components/editorial";
 
 /**
@@ -222,7 +221,6 @@ export default function Home() {
         </section>
       </main>
 
-      <SiteFooter />
     </>
   );
 }

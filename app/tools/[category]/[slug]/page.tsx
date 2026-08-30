@@ -13,9 +13,12 @@ import { ToolPagination } from "../../tool-pagination";
 /** Tools with a hand-built route of their own are excluded: a static segment
  *  wins over this dynamic one, so prerendering both would be wasted work. */
 const OWN_ROUTE = new Set([
+  "data/json-formatter",
   "image/background-remover",
   "image/image-compressor",
+  "image/image-extension-converter",
   "image/image-resizer",
+  "converter/pdf-to-image",
 ]);
 
 export function generateStaticParams() {

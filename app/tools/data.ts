@@ -123,40 +123,66 @@ export const tools: readonly Tool[] = [
     ],
   },
   {
-    slug: "jpg-to-png",
-    category: "converter",
-    title: "JPG to PNG",
-    description: "Convert JPG photos to lossless PNG right in your browser.",
-    tags: ["JPG", "PNG", "Lossless"],
-    status: "soon",
+    slug: "image-extension-converter",
+    category: "image",
+    title: "Image Extension Converter",
+    description: "Upload one original image, select PNG, JPEG, or WebP, and convert common formats including HEIC.",
+    tags: ["HEIC", "PNG", "WebP"],
+    status: "live",
     runs: "browser",
-  },
-  {
-    slug: "png-to-webp",
-    category: "converter",
-    title: "PNG to WebP",
-    description: "Trade PNG for WebP and cut image weight on the pages you ship.",
-    tags: ["PNG", "WebP", "Web"],
-    status: "soon",
-    runs: "browser",
-  },
-  {
-    slug: "heic-to-jpg",
-    category: "converter",
-    title: "HEIC to JPG",
-    description: "Turn iPhone HEIC photos into JPGs anything can open.",
-    tags: ["HEIC", "JPG", "iPhone"],
-    status: "soon",
-    runs: "server",
+    faqs: [
+      {
+        question: "Does the converter upload my image?",
+        answer:
+          "JPG, PNG, WebP, and AVIF usually convert in your browser. HEIC and HEIF are uploaded to the backend because browsers cannot reliably decode them.",
+      },
+      {
+        question: "Which target extensions can I choose?",
+        answer:
+          "You can export PNG, JPEG, or WebP. JPEG does not support transparency, so transparent pixels are flattened onto white.",
+      },
+      {
+        question: "Can it convert iPhone HEIC photos?",
+        answer:
+          "Yes. HEIC and HEIF files are sent to the backend, decoded with Pillow, and returned as your selected target format.",
+      },
+      {
+        question: "Will the image dimensions change?",
+        answer:
+          "No. The converter keeps the original pixel width and height while changing the encoded file format.",
+      },
+    ],
   },
   {
     slug: "pdf-to-image",
     category: "converter",
     title: "PDF to Image",
-    description: "Export each page of a PDF as a PNG or JPG at your chosen DPI.",
-    tags: ["PDF", "PNG", "Pages"],
-    status: "soon",
-    runs: "server",
+    description: "Export each page of a PDF as a PNG or JPG, then download all pages in one ZIP.",
+    tags: ["PDF", "PNG", "ZIP"],
+    status: "live",
+    runs: "browser",
+    faqs: [
+      {
+        question: "Does the PDF get uploaded?",
+        answer:
+          "No. The PDF is read, rendered, and zipped in your browser. The file does not leave your device.",
+      },
+      {
+        question: "How are pages named?",
+        answer:
+          "Each image uses the original PDF name plus a page number, such as document-page-01.png.",
+      },
+      {
+        question: "Should I choose PNG or JPG?",
+        answer:
+          "PNG is best for text, forms, and screenshots. JPG is usually smaller for scans or photo-heavy PDFs.",
+      },
+      {
+        question: "What DPI should I use?",
+        answer:
+          "Use 144 DPI for a good balance. Use 300 DPI when you need sharper images and do not mind a larger ZIP.",
+      },
+    ],
   },
   {
     slug: "csv-to-json",
@@ -179,11 +205,33 @@ export const tools: readonly Tool[] = [
   {
     slug: "json-formatter",
     category: "data",
-    title: "JSON Formatter",
-    description: "Format, minify, and validate JSON with readable error positions.",
-    tags: ["JSON", "Validate", "Pretty"],
-    status: "soon",
+    title: "JSON Formatter & Prettier",
+    description: "Format, minify, validate, copy, download, and inspect JSON in a collapsible tree.",
+    tags: ["JSON", "Tree", "Pretty"],
+    status: "live",
     runs: "browser",
+    faqs: [
+      {
+        question: "Does the JSON get uploaded?",
+        answer:
+          "No. Parsing, formatting, minifying, tree rendering, copying, and downloading all happen in your browser.",
+      },
+      {
+        question: "Can it show nested JSON?",
+        answer:
+          "Yes. Objects and arrays render as an expandable tree, and you can collapse or expand the structure while inspecting it.",
+      },
+      {
+        question: "What does format do?",
+        answer:
+          "Prettify parses the JSON and rewrites it with consistent two-space indentation so it is easier to read.",
+      },
+      {
+        question: "What does minify do?",
+        answer:
+          "Minify removes whitespace from valid JSON while keeping the data exactly the same.",
+      },
+    ],
   },
   {
     slug: "case-converter",

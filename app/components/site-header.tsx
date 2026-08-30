@@ -305,6 +305,13 @@ function MobileDrawer({
           </button>
           <Link
             className="flex min-h-14 items-center border-b border-border mono-label text-muted-foreground no-underline"
+            href="/storefronts"
+            onClick={onClose}
+          >
+            Storefronts
+          </Link>
+          <Link
+            className="flex min-h-14 items-center border-b border-border mono-label text-muted-foreground no-underline"
             href="/contact"
             onClick={onClose}
           >
@@ -470,6 +477,9 @@ export function SiteHeader() {
             secondaryItems={blogs.topics}
             featured={blogs.featured}
           />
+          <Link className={navLink} href="/storefronts">
+            Storefronts
+          </Link>
           <Link className={navLink} href="/contact">
             Contact
           </Link>

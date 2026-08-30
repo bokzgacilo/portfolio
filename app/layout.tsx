@@ -2,8 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { DM_Mono, Fraunces, Inter } from "next/font/google";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
-import { PageTransition } from "./components/page-transition";
-import { SiteHeader } from "./components/site-header";
+import { SiteChrome } from "./components/site-chrome";
 import "./globals.css";
 
 const inter = Inter({
@@ -29,7 +28,8 @@ const siteUrl = "https://www.bokzgacilo.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Ariel Jericko Gacilo | Technical Partner for Apps, Games, and Systems",
+  title:
+    "Ariel Jericko Gacilo | Technical Partner for Apps, Games, and Systems",
   description:
     "Ariel Jericko Gacilo partners with teams to build apps, games, desktop tools, commerce workflows, API integrations, automation, and launch-ready systems.",
   keywords: [
@@ -73,7 +73,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "Ariel Jericko Gacilo Portfolio",
-    title: "Ariel Jericko Gacilo | Technical Partner for Apps, Games, and Systems",
+    title:
+      "Ariel Jericko Gacilo | Technical Partner for Apps, Games, and Systems",
     description:
       "Technical partner for apps, games, desktop tools, commerce workflows, API integrations, automation, data work, and launch support.",
     url: siteUrl,
@@ -88,7 +89,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ariel Jericko Gacilo | Technical Partner for Apps, Games, and Systems",
+    title:
+      "Ariel Jericko Gacilo | Technical Partner for Apps, Games, and Systems",
     description:
       "Partnering on apps, games, desktop tools, commerce workflows, API integrations, automation, and launch-ready systems.",
     images: ["/assets/headshot.jpeg"],
@@ -121,8 +123,7 @@ export default function RootLayout({
       className={`${inter.variable} ${fraunces.variable} ${dmMono.variable}`}
     >
       <body className="antialiased">
-        <SiteHeader />
-        <PageTransition>{children}</PageTransition>
+        <SiteChrome>{children}</SiteChrome>
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5701102950204692"
