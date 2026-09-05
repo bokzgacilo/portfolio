@@ -4,7 +4,7 @@ import { Eyebrow, SubPage } from "../components/editorial";
 import { breadcrumbs, JsonLd } from "../components/json-ld";
 import { absoluteUrl, site } from "../data/site";
 
-const effectiveDate = "August 27, 2026";
+const effectiveDate = "September 6, 2026";
 
 const sections = [
   {
@@ -12,6 +12,7 @@ const sections = [
     body: [
       "Contact and feedback forms may collect your name, email address, company or project details, website, message, feedback type, and the tool page you submitted from.",
       "Free tools may process files you choose to upload or load into the browser. Some tools run entirely on your device; the Background Remover sends the selected image to the API at api.bokzgacilo.com for processing.",
+      "Tool and blog statistics use a random browser identifier stored in localStorage to count visitors, successful tool actions, and clicks to external articles. Supabase stores this identifier, the tool or article identifier, action type, and timestamp. Only aggregate counts are displayed publicly; no file contents, filenames, or form details are included in these events. Clearing browser storage resets the identifier and may count you as a new visitor.",
       "Basic technical data may be collected through hosting, security, analytics, and server logs, including browser type, approximate location, referring page, timestamps, IP address, and pages visited.",
     ],
   },
@@ -84,7 +85,7 @@ export default function PrivacyPolicyPage() {
             "@id": `${absoluteUrl("/privacy-policy")}#privacy-policy`,
             url: absoluteUrl("/privacy-policy"),
             name: "Privacy Policy",
-            dateModified: "2026-08-27",
+            dateModified: "2026-09-06",
             publisher: {
               "@id": `${absoluteUrl("/")}#person`,
               "@type": "Person",

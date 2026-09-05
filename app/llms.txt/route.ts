@@ -26,7 +26,7 @@ export function GET() {
     "",
     "## Pages",
     "",
-    link("Home", "/", `Overview, services, and capability map. ${site.availability}.`),
+    link("Home", "/", `Featured tools, blog posts, and technical partnership enquiries. ${site.availability}.`),
     link("Works", "/works", "Case studies filterable by project type, tag, and technology."),
     link("Tools", "/tools", `Free browser and server utilities — ${liveTools.length} live, ${plannedTools.length} planned. No signup.`),
     link("Blogs", "/blogs", "Technical writing and implementation notes from client work."),

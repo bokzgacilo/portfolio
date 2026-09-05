@@ -1,26 +1,16 @@
-import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+import { ResourceStatistics } from "./components/statistics/client";
+import { blogKey } from "./components/statistics/registry";
+import { ArrowUpRight } from "lucide-react";
 import { Button, ButtonArrow } from "@/components/ui/button";
+import { Eyebrow, measure, Section } from "./components/editorial";
+import { blogs } from "./data/blogs";
+import { categoryLabel, toolHref, tools } from "./tools/data";
 
-import { CapabilityMap } from "./components/capability-map";
-import { HeroCarousel } from "./components/hero-carousel";
-import { services } from "./data/services";
-import {
-  Eyebrow,
-  measure,
-  Section,
-  SectionHeader,
-} from "./components/editorial";
-
-/**
- * Each highlight doubles as a jump link, so the row is three more ways into
- * the page rather than three dead numbers.
- */
-const proofPoints = [
-  { value: "3", label: "case studies to read", href: "/works" },
-  { value: "6", label: "ways I can help", href: "#services" },
-  { value: "1:1", label: "scope review", href: "#contact" },
-] as const;
-
+// Registry order is the editorial order; only working tools are featured.
+const featuredTools = tools.filter((tool) => tool.status === "live").slice(0, 5);
+const featuredBlogs = blogs.slice(0, 5);
+const entryClass = "group/entry grid grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-4 border-b border-border py-6 transition-colors hover:bg-card/60 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring sm:grid-cols-[3rem_minmax(0,1fr)_auto] sm:gap-6 sm:py-8";
 
 const structuredData = [
   {
@@ -87,140 +77,78 @@ export default function Home() {
       ))}
 
       <main>
-        <section
-          className="mx-auto grid min-h-[92svh] w-[min(92%,1500px)] grid-cols-[minmax(420px,1.22fr)_minmax(0,0.78fr)] items-center gap-[clamp(1.4rem,3.5vw,3.5rem)] pt-[clamp(7rem,12vw,10rem)] pb-[clamp(2rem,6vw,5rem)] max-[900px]:w-[min(88%,760px)] max-[900px]:grid-cols-1 max-[900px]:pt-36 max-[560px]:min-h-0 max-[560px]:w-[calc(100%_-_2.5rem)] max-[560px]:pt-28"
-          id="hero"
-        >
-          <HeroCarousel />
-
-          <div className="max-w-[640px] [animation:rise_0.7s_ease_both] max-[900px]:order-first">
-            {/* Availability leads: it is the part of the header that invites a
-                reply, so it outranks the discipline label beside it. */}
-
-            {/* max-w in ch so the three-line break holds at every step of the
-                clamp instead of only at the desktop size. */}
-            <h1 className="display mb-[1.25rem] max-w-[17ch] text-[clamp(2.7rem,4.05vw,4.5rem)] leading-[1] max-[900px]:text-[2.35rem] max-[900px]:leading-[1.03]">
-              Digital products that keep your ideas{" "}
-              <em className="text-brand italic">moving</em>.
-            </h1>
-            <p className="max-w-[52ch] text-[clamp(1rem,1.35vw,1.2rem)] leading-[1.6] text-muted-foreground max-[900px]:max-w-[48ch] max-[560px]:max-w-[34ch]">
-              I build and repair web apps, games, Android apps, Windows desktop
-              tools, storefronts, integrations, and automations — then hand them
-              over documented, so they keep running without me.
-            </p>
-            <nav
-              className="mt-[1.7rem] grid grid-cols-3 gap-[0.9rem] border-t border-border pt-[1.15rem] max-[560px]:gap-[0.6rem]"
-              aria-label="Portfolio highlights"
-            >
-              {proofPoints.map(({ value, label, href }) => (
-                <a
-                  className="group/proof grid gap-[0.2rem] no-underline"
-                  key={label}
-                  href={href}
-                >
-                  <strong className="display text-[clamp(1.8rem,3vw,2.65rem)] leading-none font-[650] text-foreground transition-colors group-hover/proof:text-brand">
-                    {value}
-                  </strong>
-                  <span className="text-[0.88rem] leading-[1.3] font-semibold text-muted-foreground transition-colors group-hover/proof:text-foreground max-[560px]:text-[0.78rem]">
-                    {label}
-                  </span>
-                </a>
-              ))}
-            </nav>
-            <div className="mt-[1.85rem] flex flex-wrap items-center gap-[0.7rem] max-[560px]:flex-col max-[560px]:items-stretch">
-              <Button variant="cta-filled" size="pill-cta" asChild>
-                <a className="max-[560px]:w-full" href="/contact">
-                  Start a conversation
-                  <ButtonArrow />
-                </a>
-              </Button>
-              <Button variant="editorial" size="pill" asChild>
-                <a className="max-[560px]:w-full" href="/works">
-                  Browse all works
-                </a>
-              </Button>
+        <Section id="tools" aria-labelledby="home-tools" className="border-t-0 pt-[clamp(8rem,14vw,11rem)] pb-[clamp(3rem,6vw,5rem)]">
+          <div className="mb-8 flex flex-wrap items-end justify-between gap-6 sm:mb-10">
+            <div>
+              <Eyebrow>Free to use · No signup</Eyebrow>
+              <h1 id="home-tools" className="display text-[clamp(2.8rem,6vw,5rem)] leading-none">Top tools<span className="ml-4 align-top font-mono text-sm text-brand">05</span></h1>
             </div>
-            <p className="mt-[1.15rem] max-w-[46ch] text-[0.92rem] leading-[1.5] text-muted-foreground">
-              Tell me what&apos;s slowing you down and I&apos;ll reply with a
-              practical next step — no pitch deck, no obligation.
-            </p>
+            <Button variant="editorial" size="pill" asChild>
+              <Link href="/tools" className="gap-3">View all tools <ArrowUpRight aria-hidden="true" /></Link>
+            </Button>
           </div>
-        </section>
-
-        <Section id="services">
-          <SectionHeader eyebrow="Services" title="Focused" accent="support" />
-          <div className="grid grid-cols-3 border-t border-l border-border max-[900px]:grid-cols-1">
-            {services.map((service, index) => (
-              <article
-                className="reveal min-h-[430px] border-r border-b border-border bg-[rgb(255_253_248/0.34)] p-[clamp(1rem,3vw,1.6rem)] transition-colors hover:bg-[rgb(255_253_248/0.72)]"
-                key={service.title}
-              >
-                <img
-                  className="mx-auto mb-[1.45rem] block aspect-square w-[min(100%,260px)] object-contain drop-shadow-[0_18px_28px_rgb(21_20_18/0.08)]"
-                  src={service.image}
-                  alt=""
-                  loading="lazy"
-                  aria-hidden="true"
-                />
-                <span className="mono-label text-brand">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h3 className="mt-4 mb-[0.7rem] text-base font-bold">
-                  {service.title}
-                </h3>
-                <p className="mb-4 text-muted-foreground">{service.body}</p>
-                <div className="flex flex-wrap gap-[0.7rem]">
-                  {service.tags.map((tag) => (
-                    <Badge variant="chip" key={tag}>
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              </article>
+          <ol className="border-t border-border" aria-label="Featured tools">
+            {featuredTools.map((tool, index) => (
+              <li key={tool.slug}>
+                <Link href={toolHref(tool)} className={entryClass}>
+                  <span className="self-start pt-1 font-mono text-xs text-brand sm:text-sm" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+                  <div className="min-w-0">
+                    <span className="mono-label text-brand">{categoryLabel(tool.category)}</span>
+                    <h2 className="display mt-1 mb-2 text-[clamp(1.5rem,3vw,2.3rem)] leading-tight transition-colors group-hover/entry:text-brand">{tool.title}</h2>
+                    <p className="max-w-[65ch] text-sm text-muted-foreground sm:text-base">{tool.description}</p>
+                    <ResourceStatistics resource={`tool/${tool.category}/${tool.slug}`} kind="tool" />
+                  </div>
+                  <ArrowUpRight className="size-5 text-brand transition-transform group-hover/entry:translate-x-1 group-hover/entry:-translate-y-1 sm:size-6" aria-hidden="true" />
+                </Link>
+              </li>
             ))}
-          </div>
+          </ol>
         </Section>
 
-        <Section compact width="map" id="skills">
-          <SectionHeader
-            eyebrow="Capabilities"
-            title="Business"
-            accent="support"
-          />
-          <CapabilityMap />
-        </Section>
-
-        <section
-          className={`${measure.text} border-t border-border py-[clamp(4rem,8vw,7rem)]`}
-          id="contact"
-        >
-          <div className="reveal mx-auto flex max-w-[900px] flex-col items-center text-center">
-            <div className="flex flex-col items-center">
-              <Eyebrow className="mb-5">Ready to scope the work?</Eyebrow>
-              <h2 className="display max-w-[14ch] text-[clamp(2.55rem,5.4vw,5.4rem)] leading-[0.95]">
-                Build the next system with a steady technical partner.
-              </h2>
-              <p className="mt-6 max-w-[660px] text-[clamp(1rem,1.4vw,1.16rem)] text-muted-foreground">
-                Send the goal, bottleneck, timeline, and budget range. I&apos;ll
-                help turn it into a practical next step.
-              </p>
+        <Section id="blogs" aria-labelledby="home-blogs" className="border-t-0 pt-4 pb-[clamp(4rem,8vw,7rem)]">
+          <div className="mb-8 flex flex-wrap items-end justify-between gap-6 sm:mb-10">
+            <div>
+              <Eyebrow>Notes from project work</Eyebrow>
+              <h2 id="home-blogs" className="display text-[clamp(2.8rem,6vw,5rem)] leading-none">Top blogs</h2>
             </div>
+            <Button variant="editorial" size="pill" asChild>
+              <Link href="/blogs" className="gap-3">View blogs <ArrowUpRight aria-hidden="true" /></Link>
+            </Button>
+          </div>
+          <ol className="border-t border-border" aria-label="Featured blogs">
+            {featuredBlogs.map((blog, index) => (
+              <li key={blog.href}>
+                <a href={blog.href} target="_blank" rel="noopener noreferrer" className={entryClass}>
+                  <span className="self-start pt-1 font-mono text-xs text-brand sm:text-sm" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+                  <div className="min-w-0">
+                    <span className="mono-label text-brand">{blog.source}</span>
+                    <h3 className="display mt-1 mb-2 max-w-[32ch] text-[clamp(1.5rem,3vw,2.3rem)] leading-tight transition-colors group-hover/entry:text-brand">{blog.title}</h3>
+                    <p className="max-w-[65ch] text-sm text-muted-foreground sm:text-base">{blog.description}</p>
+                    <ResourceStatistics resource={blogKey(blog.href)} kind="blog" />
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </div>
+                  <ArrowUpRight className="size-5 text-brand transition-transform group-hover/entry:translate-x-1 group-hover/entry:-translate-y-1 sm:size-6" aria-hidden="true" />
+                </a>
+              </li>
+            ))}
+          </ol>
+        </Section>
 
-            <Button
-              className="mt-9"
-              variant="cta-filled"
-              size="pill-cta"
-              asChild
-            >
-              <a href="/contact">
-                Start a conversation
-                <ButtonArrow />
-              </a>
+        <section className={`${measure.text} border-t border-border py-[clamp(4rem,9vw,8rem)]`} id="contact" aria-labelledby="home-contact">
+          <div className="mx-auto flex max-w-[1000px] flex-col items-center text-center">
+            <Eyebrow className="mb-6">Ready to scope the work?</Eyebrow>
+            <h2 id="home-contact" className="display max-w-[18ch] text-[clamp(2.7rem,6.8vw,6rem)] leading-[0.98]">
+              Build the next system with a steady technical partner.
+            </h2>
+            <p className="mt-7 max-w-[600px] text-[clamp(1rem,1.4vw,1.16rem)] text-muted-foreground">
+              Send the goal, bottleneck, timeline, and budget range. I&apos;ll help turn it into a practical next step.
+            </p>
+            <Button className="mt-10 min-h-[72px] max-w-full gap-5 px-7 py-5 text-[clamp(1.05rem,2.2vw,1.5rem)] sm:min-h-[88px] sm:gap-8 sm:px-9 sm:py-6" variant="cta-filled" size="pill-cta" asChild>
+              <Link href="/contact">Start a conversation<ButtonArrow className="size-9 shrink-0 text-xl sm:size-11" /></Link>
             </Button>
           </div>
         </section>
       </main>
-
     </>
   );
 }

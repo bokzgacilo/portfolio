@@ -13,6 +13,7 @@ import { ToolPagination } from "../../tool-pagination";
 /** Tools with a hand-built route of their own are excluded: a static segment
  *  wins over this dynamic one, so prerendering both would be wasted work. */
 const OWN_ROUTE = new Set([
+  "audio/audio-clipper",
   "data/json-formatter",
   "image/background-remover",
   "image/image-compressor",

@@ -1,5 +1,7 @@
 "use client";
 
+import { recordStatistic } from "../components/statistics/client";
+
 export type ToolUsage = {
   outputs: number;
   lastRequestAt: string | null;
@@ -35,13 +37,14 @@ export function readToolUsage(key: string): ToolUsage {
 export function recordToolOutput(key: string) {
   if (typeof window === "undefined") return;
 
+  recordStatistic(`tool/${key}`, "complete");
   const current = readToolUsage(key);
   const next: ToolUsage = {
     outputs: current.outputs + 1,
     lastRequestAt: new Date().toISOString(),
   };
 
-  window.localStorage.setItem(storageKey(key), JSON.stringify(next));
+  try { window.localStorage.setItem(storageKey(key), JSON.stringify(next)); } catch { /* Optional storage must not interrupt the tool. */ }
   window.dispatchEvent(new CustomEvent("tool-usage-change", { detail: { key, usage: next } }));
 }
 

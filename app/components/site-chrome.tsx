@@ -3,6 +3,8 @@
 import { usePathname } from "next/navigation";
 import { useEffect, type ReactNode } from "react";
 
+import { StatisticsProvider } from "./statistics/client";
+
 import { SiteFooter } from "./editorial";
 import { PageTransition } from "./page-transition";
 import { SiteHeader } from "./site-header";
@@ -29,10 +31,10 @@ export function SiteChrome({ children }: { children: ReactNode }) {
   }, [detached]);
 
   return (
-    <>
+    <StatisticsProvider>
       {detached ? null : <SiteHeader />}
       <PageTransition>{children}</PageTransition>
       {detached ? null : <SiteFooter />}
-    </>
+    </StatisticsProvider>
   );
 }

@@ -22,6 +22,7 @@ export type Tool = {
 
 export const categories = [
   { slug: "image", label: "Image" },
+  { slug: "audio", label: "Audio" },
   { slug: "converter", label: "Converter" },
   { slug: "data", label: "Data" },
   { slug: "text", label: "Text" },
@@ -29,6 +30,21 @@ export const categories = [
 ] as const;
 
 export const tools: readonly Tool[] = [
+  {
+    slug: "audio-clipper",
+    category: "audio",
+    title: "Audio Clipper",
+    description: "Import audio, select a section on the waveform, and save your clip as WAV.",
+    tags: ["Audio", "Trim", "WAV"],
+    status: "live",
+    runs: "browser",
+    faqs: [
+      { question: "Is my audio uploaded?", answer: "No. Decoding, waveform rendering, playback, and clipping happen on your device. Your original file stays unchanged." },
+      { question: "Which audio files can I import?", answer: "Try MP3, WAV, M4A, AAC, OGG, FLAC, or WebM. Support depends on your browser and the codec inside the file. The file limit is 100 MB and decoded audio is limited to 30 minutes." },
+      { question: "What gets saved?", answer: "Only the section between the start and end handles is saved, as a 16-bit PCM WAV file. WAV files can be larger than compressed originals. Channel count and the browser's decoded sample rate are preserved." },
+      { question: "Can I make more than one clip?", answer: "Yes. Download a selection, then adjust the handles and download again. Reset selection restores the full track." },
+    ],
+  },
   {
     slug: "background-remover",
     category: "image",

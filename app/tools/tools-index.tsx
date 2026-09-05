@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -14,7 +14,8 @@ import {
   tools,
   type ToolStatus,
 } from "./data";
-import { formatLastRequest, readToolUsage, usageKey, type ToolUsage } from "./usage";
+import { usageKey } from "./usage";
+import { ResourceStatistics } from "../components/statistics/client";
 
 const ALL = "All";
 
@@ -62,29 +63,6 @@ export function ToolsIndex() {
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>(ALL);
   const [activeStatus, setActiveStatus] = useState<StatusFilter>(ALL);
-  const [usage, setUsage] = useState<Record<string, ToolUsage>>({});
-
-  useEffect(() => {
-    function refreshUsage() {
-      setUsage(
-        Object.fromEntries(
-          tools.map((tool) => {
-            const key = usageKey(tool.category, tool.slug);
-            return [key, readToolUsage(key)];
-          })
-        )
-      );
-    }
-
-    refreshUsage();
-    window.addEventListener("storage", refreshUsage);
-    window.addEventListener("tool-usage-change", refreshUsage);
-    return () => {
-      window.removeEventListener("storage", refreshUsage);
-      window.removeEventListener("tool-usage-change", refreshUsage);
-    };
-  }, []);
-
   const filtered = useMemo(() => {
     const search = query.trim().toLowerCase();
 
@@ -210,7 +188,6 @@ export function ToolsIndex() {
       <div className="grid grid-cols-2 max-[1100px]:grid-cols-1">
         {filtered.map((tool) => {
           const key = usageKey(tool.category, tool.slug);
-          const toolUsage = usage[key] ?? { outputs: 0, lastRequestAt: null };
           const isLive = tool.status === "live";
           const cardClassName = cn(
             "reveal group/tool flex min-h-[280px] flex-col border-r border-b border-border p-[clamp(1.2rem,2.5vw,1.7rem)] transition-colors",
@@ -256,29 +233,8 @@ export function ToolsIndex() {
                 ))}
               </div>
 
-              <div className="mt-auto flex items-end justify-between gap-4 border-t border-border pt-[0.9rem]">
-                <dl className="flex min-w-0 flex-wrap gap-x-5 gap-y-2">
-                  {(
-                    [
-                      ["Outputs", String(toolUsage.outputs)],
-                      ["Last request", formatLastRequest(toolUsage.lastRequestAt)],
-                    ] as const
-                  ).map(([label, value]) => (
-                    <div className="min-w-0" key={label}>
-                      <dt className="mono-label text-muted-foreground">{label}</dt>
-                      <dd
-                        className={cn(
-                          "mt-0.5 font-bold leading-tight tabular-nums",
-                          label === "Outputs"
-                            ? "text-[0.84rem] text-foreground"
-                            : "text-[0.8rem] text-muted-foreground"
-                        )}
-                      >
-                        {value}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
+              <div className="mt-auto flex flex-wrap items-end justify-between gap-4 border-t border-border pt-[0.9rem]">
+                {isLive && <ResourceStatistics resource={`tool/${key}`} kind="tool" />}
                 <span className="inline-flex items-center gap-2 font-extrabold text-brand-dark underline decoration-border underline-offset-[0.35em]">
                   {isLive ? "Open tool" : "Details"}
                   <span
