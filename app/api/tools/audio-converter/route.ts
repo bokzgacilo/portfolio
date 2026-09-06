@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 
 const OUTPUT_FORMATS = new Set(["mp3", "wav", "ogg", "flac", "aac"]);
-const MAX_BYTES = 100 * 1024 * 1024;
+const MAX_BYTES = 50 * 1024 * 1024;
 
 const backendUrl = () =>
   process.env.NODE_ENV === "production"
@@ -26,17 +26,17 @@ export async function POST(request: NextRequest) {
   }
 
   if (file.size === 0 || file.size > MAX_BYTES) {
-    return jsonError("File is empty or larger than the 100 MB limit.", 413);
+    return jsonError("File is empty or larger than the 50 MB limit.", 413);
   }
 
-  const outputFormat = form.get("output_format");
+  const outputFormat = form.get("target");
   if (typeof outputFormat !== "string" || !OUTPUT_FORMATS.has(outputFormat)) {
     return jsonError("Choose MP3, WAV, OGG, FLAC, or AAC output.", 400);
   }
 
   let response: Response;
   try {
-    response = await fetch(`${backendUrl()}/api/audio/convert`, {
+    response = await fetch(`${backendUrl()}/api/convert-audio`, {
       method: "POST",
       body: form,
       headers: { origin: request.headers.get("origin") || "https://www.bokzgacilo.com" },
@@ -54,9 +54,9 @@ export async function POST(request: NextRequest) {
 
   for (const name of [
     "Content-Disposition",
-    "X-Audio-Input-Format",
+    "X-Audio-Source-Format",
     "X-Audio-Output-Format",
-    "X-Audio-Duration",
+    "X-Audio-Output-Bytes",
     "X-Processing-Ms",
   ]) {
     const value = response.headers.get(name);

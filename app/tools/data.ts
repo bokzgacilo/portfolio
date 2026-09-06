@@ -67,7 +67,7 @@ export const tools: readonly Tool[] = [
       {
         question: "What files can I upload?",
         answer:
-          "Use common audio files such as MP3, WAV, M4A, AAC, OGG, FLAC, or WebM up to 100 MB.",
+          "Use common audio files such as MP3, WAV, M4A, AAC, OGG, FLAC, or WebM up to 50 MB.",
       },
       {
         question: "Will converting improve audio quality?",

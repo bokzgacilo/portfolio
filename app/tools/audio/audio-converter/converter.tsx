@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 
 import { recordToolOutput, usageKey } from "../../usage";
 
-const MAX_BYTES = 100 * 1024 * 1024;
+const MAX_BYTES = 50 * 1024 * 1024;
 const ACCEPTED_INPUT = "audio/*,.mp3,.wav,.m4a,.aac,.ogg,.flac,.webm";
 
 const FORMATS = [
@@ -63,7 +63,7 @@ async function errorMessage(response: Response) {
     const parsed = JSON.parse(body) as { error?: string; detail?: string };
     return parsed.error || parsed.detail || "The audio could not be converted.";
   } catch {
-    if (response.status === 413) return "That audio file is larger than the 100 MB limit.";
+    if (response.status === 413) return "That audio file is larger than the 50 MB limit.";
     if (response.status === 415) return "That audio format is not supported.";
     if (response.status >= 500) return "The audio conversion service is unavailable right now.";
     return body || "The audio could not be converted.";
@@ -111,7 +111,7 @@ export function AudioConverter() {
       return;
     }
     if (next.size > MAX_BYTES) {
-      setError(`${next.name} is larger than the 100 MB limit.`);
+      setError(`${next.name} is larger than the 50 MB limit.`);
       return;
     }
     clearResult();
@@ -127,7 +127,7 @@ export function AudioConverter() {
 
     const form = new FormData();
     form.append("file", file, file.name);
-    form.append("output_format", format);
+    form.append("target", format);
 
     try {
       const response = await fetch("/api/tools/audio-converter", {
@@ -203,7 +203,7 @@ export function AudioConverter() {
               <span className="max-w-full text-wrap text-muted-foreground">
                 Drop a track here, or choose MP3, WAV, M4A, AAC, OGG, FLAC, or WebM from your device.
               </span>
-              <span className="mono-label mt-1 text-brand">Up to 100 MB</span>
+              <span className="mono-label mt-1 text-brand">Up to 50 MB</span>
             </span>
           </button>
         ) : (
@@ -338,7 +338,7 @@ export function AudioConverter() {
         <dl className="grid gap-3 border-t border-border pt-5">
           {[
             ["Source", file ? file.type || "Audio file" : "No file selected"],
-            ["Limit", "100 MB"],
+            ["Limit", "50 MB"],
             ["Target", selectedFormat.label],
             ["Processing", "Backend conversion"],
           ].map(([label, value]) => (
