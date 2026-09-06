@@ -7,263 +7,80 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-import {
-  categories,
-  categoryLabel,
-  toolHref,
-  tools,
-  type ToolStatus,
-} from "./data";
+import { categories, categoryLabel, toolHref, tools } from "./data";
 import { usageKey } from "./usage";
 import { ResourceStatistics } from "../components/statistics/client";
 
 const ALL = "All";
 
-/** "All" plus the two registry states. Kept in this order so the filter reads
- *  widest-first, the same way the category list does. */
-const STATUSES = [ALL, "live", "soon"] as const;
-type StatusFilter = (typeof STATUSES)[number];
-
-/** The cards badge these as "LIVE" and "Soon", so the filter says the same. */
-const STATUS_LABELS: Record<ToolStatus, string> = {
-  live: "Live",
-  soon: "Soon",
-};
-
-/** One row of a filter group: label on the left, how many tools it would leave
- *  on the right. Shared so the two groups cannot drift apart visually. */
-function FilterOption({
-  label,
-  count,
-  active,
-  onSelect,
-}: {
-  label: string;
-  count: number;
-  active: boolean;
-  onSelect: () => void;
-}) {
-  return (
-    <button
-      className={cn(
-        "flex w-full cursor-pointer items-center justify-between gap-2 text-left font-[650] transition-colors hover:text-foreground",
-        active ? "text-foreground" : "text-muted-foreground",
-      )}
-      type="button"
-      onClick={onSelect}
-      aria-pressed={active}
-    >
-      {label}
-      <span className="mono-label text-muted-foreground">{count}</span>
-    </button>
-  );
-}
-
 export function ToolsIndex() {
   const [query, setQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState<string>(ALL);
-  const [activeStatus, setActiveStatus] = useState<StatusFilter>(ALL);
+  const [activeCategory, setActiveCategory] = useState(ALL);
   const filtered = useMemo(() => {
     const search = query.trim().toLowerCase();
-
     return tools.filter((tool) => {
-      const matchesCategory =
-        activeCategory === ALL || tool.category === activeCategory;
-      const matchesStatus = activeStatus === ALL || tool.status === activeStatus;
-      const matchesSearch =
-        !search ||
-        [
-          tool.title,
-          tool.description,
-          categoryLabel(tool.category),
-          ...tool.tags,
-        ]
-          .join(" ")
-          .toLowerCase()
-          .includes(search);
-
-      return matchesCategory && matchesStatus && matchesSearch;
+      const matchesCategory = activeCategory === ALL || tool.category === activeCategory;
+      const matchesSearch = !search || [tool.title, tool.description, categoryLabel(tool.category), ...tool.tags].join(" ").toLowerCase().includes(search);
+      return matchesCategory && matchesSearch;
     });
-  }, [activeCategory, activeStatus, query]);
-
-  /* Each group counts against the *other* group's selection, so a number is
-     what you would actually get by clicking it -- pick "Soon" and a category
-     with nothing planned reads 0 rather than its lifetime total. The search box
-     is deliberately left out: counts churning on every keystroke reads as
-     noise. */
-  const counts = useMemo(() => {
-    const byCategory = new Map<string, number>();
-    const byStatus = new Map<StatusFilter, number>();
-
-    for (const tool of tools) {
-      if (activeStatus === ALL || tool.status === activeStatus) {
-        byCategory.set(tool.category, (byCategory.get(tool.category) ?? 0) + 1);
-      }
-      if (activeCategory === ALL || tool.category === activeCategory) {
-        byStatus.set(tool.status, (byStatus.get(tool.status) ?? 0) + 1);
-      }
-    }
-
-    return {
-      category: byCategory,
-      categoryTotal: tools.filter(
-        (tool) => activeStatus === ALL || tool.status === activeStatus,
-      ).length,
-      status: byStatus,
-      statusTotal: tools.filter(
-        (tool) => activeCategory === ALL || tool.category === activeCategory,
-      ).length,
-    };
-  }, [activeCategory, activeStatus]);
+  }, [activeCategory, query]);
 
   return (
-    <div className="grid grid-cols-[minmax(260px,0.28fr)_minmax(0,1fr)] border-t border-l border-border max-[900px]:grid-cols-1">
-      <aside
-        className="border-r border-b border-border bg-[rgb(255_253_248/0.4)]"
-        aria-label="Tool filters"
-      >
-        <div className="reveal sticky top-[5.25rem] grid content-start gap-[1.8rem] p-[clamp(1rem,2.5vw,1.6rem)] max-[900px]:static">
-          <label className="grid gap-[0.6rem]">
-            <span className="text-[0.95rem] font-extrabold text-foreground">
-              Search
-            </span>
-            <Input
-              type="search"
-              className="min-h-11 rounded-full border-border bg-card px-4 py-[0.65rem] text-base text-foreground md:text-base"
-              placeholder="Search tools"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              aria-label="Search tools"
-            />
-          </label>
-
-          <div className="grid gap-[0.72rem]">
-            <h2 className="text-[0.95rem] font-extrabold text-foreground">
-              Category
-            </h2>
-            {[ALL, ...categories.map((category) => category.slug)].map(
-              (slug) => (
-                <FilterOption
-                  key={slug}
-                  label={slug === ALL ? ALL : categoryLabel(slug)}
-                  count={
-                    slug === ALL
-                      ? counts.categoryTotal
-                      : (counts.category.get(slug) ?? 0)
-                  }
-                  active={activeCategory === slug}
-                  onSelect={() => setActiveCategory(slug)}
-                />
-              ),
-            )}
-          </div>
-
-          <div className="grid gap-[0.72rem]">
-            <h2 className="text-[0.95rem] font-extrabold text-foreground">
-              Status
-            </h2>
-            {STATUSES.map((status) => (
-              <FilterOption
-                key={status}
-                label={status === ALL ? ALL : STATUS_LABELS[status]}
-                count={
-                  status === ALL
-                    ? counts.statusTotal
-                    : (counts.status.get(status) ?? 0)
-                }
-                active={activeStatus === status}
-                onSelect={() => setActiveStatus(status)}
-              />
-            ))}
-          </div>
-
-          <p className="border-t border-border pt-[1.1rem] text-[0.92rem] leading-[1.5] text-muted-foreground">
-            Everything here is free and needs no account. Tools marked{" "}
-            <span className="mono-label text-brand">in browser</span> never
-            upload your file.
-          </p>
+    <div className="border-t border-l border-border">
+      <div className="sticky top-[5.5rem] z-[5] flex flex-wrap items-center gap-3 border-r border-b border-border bg-[rgb(243_247_251/0.94)] p-[clamp(0.9rem,2vw,1.25rem)] backdrop-blur-xl">
+        <div className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto pb-1" aria-label="Tool categories">
+          {[ALL, ...categories.map((category) => category.slug)].map((slug) => (
+            <button
+              key={slug}
+              type="button"
+              onClick={() => setActiveCategory(slug)}
+              aria-pressed={activeCategory === slug}
+              className={cn(
+                "mono-label shrink-0 rounded-full border px-4 py-2 transition-colors",
+                activeCategory === slug
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-card text-muted-foreground hover:border-brand hover:text-brand-dark",
+              )}
+            >
+              {slug === ALL ? ALL : categoryLabel(slug)}
+            </button>
+          ))}
         </div>
-      </aside>
+        <Input
+          type="search"
+          className="min-h-11 w-full rounded-full border-border bg-card px-4 py-[0.65rem] text-base text-foreground md:w-[min(320px,32vw)] md:text-base"
+          placeholder="Search tools"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          aria-label="Search tools"
+        />
+      </div>
 
-      <div className="grid grid-cols-2 max-[1100px]:grid-cols-1">
+      <div>
         {filtered.map((tool) => {
           const key = usageKey(tool.category, tool.slug);
           const isLive = tool.status === "live";
-          const cardClassName = cn(
-            "reveal group/tool flex min-h-[280px] flex-col border-r border-b border-border p-[clamp(1.2rem,2.5vw,1.7rem)] transition-colors",
-            isLive
-              ? "bg-card no-underline shadow-[inset_0_0_0_1px_rgb(21_20_18/0.08)] hover:bg-[rgb(255_253_248/0.86)]"
-              : "bg-[rgb(255_253_248/0.28)]"
-          );
-          const cardContent = (
+          const content = (
             <>
-              <div className="flex items-center justify-between gap-3">
-                <span className="mono-label text-brand">
-                  {categoryLabel(tool.category)}
-                </span>
-                <span
-                  className={cn(
-                    "mono-label rounded-full border px-[0.66rem] py-[0.32rem]",
-                    isLive
-                      ? "border-primary bg-primary text-primary-foreground shadow-[0_8px_22px_rgb(21_20_18/0.14)]"
-                      : "border-border text-muted-foreground"
-                  )}
-                >
-                  {isLive ? "LIVE" : "Soon"}
-                </span>
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="mono-label text-brand">{categoryLabel(tool.category)}</span>
+                  <span className={cn("mono-label rounded-full border px-2 py-1", isLive ? "border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground")}>{isLive ? "LIVE" : "SOON"}</span>
+                </div>
+                <h3 className={cn("display mt-3 text-[clamp(1.45rem,2.4vw,2rem)] leading-none", !isLive && "text-muted-foreground")}>{tool.title}</h3>
+                <p className="mt-2 max-w-[70ch] text-sm text-muted-foreground">{tool.description}</p>
+                <div className="mt-3 flex flex-wrap gap-2">{tool.tags.map((tag) => <Badge variant="chip" key={tag}>{tag}</Badge>)}</div>
               </div>
-
-              <h3
-                className={cn(
-                  "display mt-[1.1rem] mb-3 text-[clamp(1.6rem,2.4vw,2.15rem)] leading-none",
-                  isLive ? "text-foreground" : "text-muted-foreground"
-                )}
-              >
-                {tool.title}
-              </h3>
-              <p className="mb-4 max-w-[46ch] text-muted-foreground">
-                {tool.description}
-              </p>
-
-              <div className="mb-5 flex flex-wrap gap-[0.7rem]">
-                {tool.tags.map((tag) => (
-                  <Badge variant="chip" key={tag}>
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-
-              <div className="mt-auto flex flex-wrap items-end justify-between gap-4 border-t border-border pt-[0.9rem]">
+              <div className="flex shrink-0 items-end gap-5 max-[700px]:w-full max-[700px]:justify-between">
                 {isLive && <ResourceStatistics resource={`tool/${key}`} kind="tool" />}
-                <span className="inline-flex items-center gap-2 font-extrabold text-brand-dark underline decoration-border underline-offset-[0.35em]">
-                  {isLive ? "Open tool" : "Details"}
-                  <span
-                    aria-hidden="true"
-                    className="transition-transform group-hover/tool:translate-x-[3px]"
-                  >
-                    -&gt;
-                  </span>
-                </span>
+                <span className="font-extrabold text-brand-dark underline decoration-border underline-offset-[0.35em]">{isLive ? "Open tool" : "Details"} <span aria-hidden="true">-&gt;</span></span>
               </div>
             </>
           );
-
-          return isLive ? (
-            <Link className={cardClassName} href={toolHref(tool)} key={key}>
-              {cardContent}
-            </Link>
-          ) : (
-            <article className={cardClassName} key={key}>
-              {cardContent}
-            </article>
-          );
+          const className = "reveal group/tool flex items-end gap-8 border-r border-b border-border bg-card p-[clamp(1rem,2.5vw,1.6rem)] transition-colors hover:bg-[rgb(232_242_251/0.7)] max-[700px]:flex-col max-[700px]:items-start";
+          return isLive ? <Link className={className} href={toolHref(tool)} key={key}>{content}</Link> : <article className={className} key={key}>{content}</article>;
         })}
-
-        {filtered.length === 0 ? (
-          <p className="border-r border-b border-border p-[clamp(1.2rem,2.5vw,1.7rem)] text-muted-foreground max-[1100px]:col-span-1 col-span-2">
-            No tools match those filters yet.
-          </p>
-        ) : null}
+        {filtered.length === 0 && <p className="border-r border-b border-border p-6 text-muted-foreground">No tools match those filters yet.</p>}
       </div>
     </div>
   );

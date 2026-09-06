@@ -15,6 +15,7 @@ import { ToolPagination } from "../../tool-pagination";
 const OWN_ROUTE = new Set([
   "audio/audio-clipper",
   "data/json-formatter",
+  "data/excel-unlocker",
   "image/background-remover",
   "image/image-compressor",
   "image/image-extension-converter",

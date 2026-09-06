@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const navLink =
-  "mono-label inline-flex min-h-9 items-center rounded-full px-[0.72rem] py-[0.4rem] font-medium text-muted-foreground transition-colors hover:bg-[rgb(255_253_248/0.74)] hover:text-foreground";
+  "mono-label inline-flex min-h-9 items-center rounded-full px-[0.72rem] py-[0.4rem] font-medium text-muted-foreground transition-colors hover:bg-[rgb(232_242_251/0.86)] hover:text-brand-dark";
 
 function MobileDrawer({
   isOpen,
@@ -95,6 +95,7 @@ function MobileDrawer({
 
 export function SiteHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   function closeMobileMenu() {
     setIsMobileMenuOpen(false);
@@ -115,9 +116,16 @@ export function SiteHeader() {
     };
   }, [isMobileMenuOpen]);
 
+  useEffect(() => {
+    const updateScrollState = () => setIsScrolled(window.scrollY > 18);
+    updateScrollState();
+    window.addEventListener("scroll", updateScrollState, { passive: true });
+    return () => window.removeEventListener("scroll", updateScrollState);
+  }, []);
+
   return (
     <>
-      <header className="print-hidden fixed inset-x-0 top-0 z-10 flex items-center justify-between gap-8 border-b border-[rgb(216_209_197/0.7)] bg-[rgb(247_245_240/0.82)] px-[clamp(1.25rem,4vw,4rem)] py-4 backdrop-blur-[18px] max-[900px]:gap-4 max-[560px]:absolute">
+      <header className={`print-hidden fixed inset-x-0 top-0 z-10 flex items-center justify-between gap-8 border-b px-[clamp(1.25rem,4vw,4rem)] py-4 backdrop-blur-[18px] transition-[background-color,border-color,box-shadow] duration-300 max-[900px]:gap-4 max-[560px]:absolute ${isScrolled ? "border-[rgb(176_204_226/0.9)] bg-[rgb(224_239_250/0.9)] shadow-[0_10px_30px_rgb(32_91_137/0.12)]" : "border-transparent bg-[rgb(243_247_251/0.5)]"}`}>
         <Link
           className="display text-[1.05rem] font-[650] whitespace-nowrap no-underline max-[900px]:text-[1.2rem]"
           href="/"

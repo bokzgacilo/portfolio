@@ -9,34 +9,34 @@
    shadcn's semantic slots so its components inherit the editorial look
    instead of the default neutral one.
 
-   Note on --accent: shadcn uses it as a hover *surface*, so it holds the warm
-   paper tint. The brown that reads as "the accent" in this design lives in
-   --brand, exposed as text-brand / border-brand.
+   Note on --accent: shadcn uses it as a hover surface, so it holds a quiet
+   blue tint. The stronger blue that reads as the accent lives in --brand,
+   exposed as text-brand / border-brand.
 --------------------------------------------------------------------------- */
 :root {
-  --background: #f0f0f0;
-  --foreground: #151412;
+  --background: #f3f7fb;
+  --foreground: #102033;
 
-  --card: #fffdf8;
-  --card-foreground: #151412;
-  --popover: #fffdf8;
-  --popover-foreground: #151412;
+  --card: #fbfdff;
+  --card-foreground: #102033;
+  --popover: #fbfdff;
+  --popover-foreground: #102033;
 
-  --primary: #151412;
-  --primary-foreground: #fffdf8;
-  --secondary: #e9e4da;
-  --secondary-foreground: #151412;
+  --primary: #123b66;
+  --primary-foreground: #f7fbff;
+  --secondary: #dceaf6;
+  --secondary-foreground: #163b5c;
 
-  --muted: #e9e4da;
-  --muted-foreground: #706b62;
-  --accent: #f0ebe1;
-  --accent-foreground: #151412;
+  --muted: #e5eff7;
+  --muted-foreground: #5b7186;
+  --accent: #e8f2fb;
+  --accent-foreground: #163b5c;
 
   --destructive: oklch(0.577 0.245 27.325);
 
-  --border: #d8d1c5;
-  --input: #d8d1c5;
-  --ring: #75634d;
+  --border: #c9d9e7;
+  --input: #c9d9e7;
+  --ring: #347db5;
 
   --radius: 0.5rem;
 
@@ -52,9 +52,9 @@
   --gallery-bleed: calc((100vw - min(1440px, calc(100vw - 2.5rem))) / 2);
 
   /* Brand-specific tokens with no shadcn equivalent. */
-  --paper: #fffdf8;
-  --brand: #75634d;
-  --brand-dark: #3e382f;
+  --paper: #fbfdff;
+  --brand: #2d73a8;
+  --brand-dark: #164d78;
 }
 
 @theme inline {
@@ -130,7 +130,7 @@
 /* The translucent pill used for tags, tech chips, and image annotations. */
 @utility chip {
   @apply font-mono text-[0.72rem] tracking-[0.04em] uppercase rounded-full
-    border border-[rgb(216_209_197/0.88)] bg-[rgb(255_253_248/0.78)]
+    border border-[rgb(201_217_231/0.88)] bg-[rgb(251_253_255/0.82)]
     px-[0.62rem] py-[0.32rem] text-muted-foreground backdrop-blur-md;
 }
 

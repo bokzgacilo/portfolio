@@ -250,6 +250,20 @@ export const tools: readonly Tool[] = [
     ],
   },
   {
+    slug: "excel-unlocker",
+    category: "data",
+    title: "Excel Unlocker",
+    description: "Remove worksheet and workbook protection from an XLSX or XLSM file, then download a clean copy.",
+    tags: ["Excel", "XLSX", "Unlock"],
+    status: "live",
+    runs: "server",
+    faqs: [
+      { question: "Which files are supported?", answer: "Upload an .xlsx or .xlsm workbook up to 50 MB. Macros are preserved in .xlsm files." },
+      { question: "Do I need the password?", answer: "Worksheet and workbook protection can be removed without one. If the file is encrypted and asks for a password before it opens, enter that password." },
+      { question: "Is my workbook stored?", answer: "No. The backend processes the upload in memory and returns the unlocked copy directly." },
+    ],
+  },
+  {
     slug: "case-converter",
     category: "text",
     title: "Case Converter",
