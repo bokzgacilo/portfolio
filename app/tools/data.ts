@@ -46,6 +46,37 @@ export const tools: readonly Tool[] = [
     ],
   },
   {
+    slug: "audio-converter",
+    category: "audio",
+    title: "Audio Converter",
+    description: "Upload an audio file, convert it to MP3, WAV, OGG, FLAC, or AAC, then download the new copy.",
+    tags: ["Audio", "MP3", "FLAC"],
+    status: "live",
+    runs: "server",
+    faqs: [
+      {
+        question: "Which output formats are supported?",
+        answer:
+          "You can export MP3, WAV, OGG, FLAC, or AAC. The backend handles the conversion so browser codec support is not the limiting factor.",
+      },
+      {
+        question: "Is my audio stored?",
+        answer:
+          "No. The file is uploaded for conversion, returned directly as a download, and should be handled as temporary processing data by the backend.",
+      },
+      {
+        question: "What files can I upload?",
+        answer:
+          "Use common audio files such as MP3, WAV, M4A, AAC, OGG, FLAC, or WebM up to 100 MB.",
+      },
+      {
+        question: "Will converting improve audio quality?",
+        answer:
+          "No. Conversion changes the container or encoding format. It cannot restore detail that was not present in the original file.",
+      },
+    ],
+  },
+  {
     slug: "background-remover",
     category: "image",
     title: "Background Remover",

@@ -14,6 +14,7 @@ import { ToolPagination } from "../../tool-pagination";
  *  wins over this dynamic one, so prerendering both would be wasted work. */
 const OWN_ROUTE = new Set([
   "audio/audio-clipper",
+  "audio/audio-converter",
   "data/json-formatter",
   "data/excel-unlocker",
   "image/background-remover",
