@@ -118,17 +118,22 @@ export default function Home() {
           <ol className="border-t border-border" aria-label="Featured blogs">
             {featuredBlogs.map((blog, index) => (
               <li key={blog.href}>
-                <a href={blog.href} target="_blank" rel="noopener noreferrer" className={entryClass}>
+                <Link
+                  href={blog.href}
+                  target={blog.external ? "_blank" : undefined}
+                  rel={blog.external ? "noopener noreferrer" : undefined}
+                  className={entryClass}
+                >
                   <span className="self-start pt-1 font-mono text-xs text-brand sm:text-sm" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                   <div className="min-w-0">
                     <span className="mono-label text-brand">{blog.source}</span>
                     <h3 className="display mt-1 mb-2 max-w-[32ch] text-[clamp(1.5rem,3vw,2.3rem)] leading-tight transition-colors group-hover/entry:text-brand">{blog.title}</h3>
                     <p className="max-w-[65ch] text-sm text-muted-foreground sm:text-base">{blog.description}</p>
                     <ResourceStatistics resource={blogKey(blog.href)} kind="blog" />
-                    <span className="sr-only"> (opens in a new tab)</span>
+                    {blog.external ? <span className="sr-only"> (opens in a new tab)</span> : null}
                   </div>
                   <ArrowUpRight className="size-5 text-brand transition-transform group-hover/entry:translate-x-1 group-hover/entry:-translate-y-1 sm:size-6" aria-hidden="true" />
-                </a>
+                </Link>
               </li>
             ))}
           </ol>
