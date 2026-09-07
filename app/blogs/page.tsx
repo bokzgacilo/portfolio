@@ -1,5 +1,4 @@
-import { ResourceStatistics } from "../components/statistics/client";
-import { blogKey } from "../components/statistics/registry";
+import Link from "next/link";
 import {
   Kicker,
   ListingGrid,
@@ -59,10 +58,18 @@ export default function BlogsPage() {
             <Kicker>{blog.source}</Kicker>
             <ListingTitle className="mt-2">{blog.title}</ListingTitle>
             <p className="text-muted-foreground">{blog.description}</p>
-            <ResourceStatistics resource={blogKey(blog.href)} kind="blog" />
-            <TextLink href={blog.href} target="_blank" rel="noopener noreferrer">
-              Read blog
-            </TextLink>
+            {blog.external ? (
+              <TextLink href={blog.href} target="_blank" rel="noopener noreferrer">
+                Read blog
+              </TextLink>
+            ) : (
+              <Link
+                className="mt-[1.35rem] inline-flex w-fit font-extrabold text-brand-dark underline decoration-border underline-offset-[0.35em]"
+                href={blog.href}
+              >
+                Read blog
+              </Link>
+            )}
           </ListingItem>
         ))}
       </ListingGrid>

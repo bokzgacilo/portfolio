@@ -175,7 +175,7 @@ export function ListingGrid({
     <section
       className={cn(
         "grid border-t border-l border-border max-[900px]:grid-cols-1",
-        single ? "grid-cols-[minmax(0,0.68fr)]" : "grid-cols-3",
+        single ? "grid-cols-1" : "grid-cols-3",
         className
       )}
       {...props}
