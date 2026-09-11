@@ -10,9 +10,12 @@ function backendStatisticsUrl() {
   return `${base.replace(/\/+$/, "")}/api/statistics`;
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const response = await fetch(backendStatisticsUrl(), { cache: "no-store", headers: { Accept: "application/json" } });
+    const response = await fetch(backendStatisticsUrl(), {
+      cache: "no-store",
+      headers: { Accept: "application/json", Origin: request.headers.get("origin") || "https://www.bokzgacilo.com" },
+    });
     return new NextResponse(await response.text(), { status: response.status, headers: { ...headers, "Content-Type": "application/json" } });
   } catch { return unavailable(); }
 }
@@ -20,7 +23,9 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const response = await fetch(backendStatisticsUrl(), {
-      method: "POST", body: await request.text(), headers: { "Content-Type": "application/json", Origin: "https://www.bokzgacilo.com" },
+      method: "POST",
+      body: await request.text(),
+      headers: { "Content-Type": "application/json", Origin: request.headers.get("origin") || "https://www.bokzgacilo.com" },
     });
     return new NextResponse(response.status === 204 ? null : await response.text(), { status: response.status, headers });
   } catch { return unavailable(); }
