@@ -23,6 +23,7 @@ export type Tool = {
 export const categories = [
   { slug: "image", label: "Image" },
   { slug: "audio", label: "Audio" },
+  { slug: "video", label: "Video" },
   { slug: "converter", label: "Converter" },
   { slug: "data", label: "Data" },
   { slug: "text", label: "Text" },
@@ -292,6 +293,21 @@ export const tools: readonly Tool[] = [
       { question: "Which files are supported?", answer: "Upload an .xlsx or .xlsm workbook up to 50 MB. Macros are preserved in .xlsm files." },
       { question: "Do I need the password?", answer: "Worksheet and workbook protection can be removed without one. If the file is encrypted and asks for a password before it opens, enter that password." },
       { question: "Is my workbook stored?", answer: "No. The backend processes the upload in memory and returns the unlocked copy directly." },
+    ],
+  },
+  {
+    slug: "youtube-downloader",
+    category: "video",
+    title: "YouTube Downloader",
+    description: "Paste a YouTube link and download it as an MP4 video or extract the audio as MP3.",
+    tags: ["YouTube", "MP3", "MP4"],
+    status: "live",
+    runs: "server",
+    faqs: [
+      { question: "What can I download?", answer: "Paste a public YouTube video link, then choose MP4 (up to 720p) or MP3 audio. Playlists, private, and age-restricted videos are not supported." },
+      { question: "Is there a length limit?", answer: "Videos longer than 30 minutes are rejected so the free backend instance can process the request reliably." },
+      { question: "Is the video stored on the server?", answer: "No. The backend downloads it to a temporary file, streams it back to you, and deletes it immediately after." },
+      { question: "Can I use this for anything I want?", answer: "Only download videos you own or have permission to save, and respect YouTube's Terms of Service and applicable copyright law." },
     ],
   },
   {
