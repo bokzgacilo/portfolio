@@ -186,16 +186,16 @@ export default function YoutubeDownloader() {
               <button
                 type="button"
                 onClick={() => setFormat("mp4")}
-                className={`flex flex-1 items-center justify-center gap-2 border px-4 py-3 transition-colors ${format === "mp4" ? "border-brand bg-brand/10" : "border-border hover:bg-background"}`}
+                className={`flex flex-1 items-start justify-center gap-2 border px-4 py-3 text-center transition-colors ${format === "mp4" ? "border-brand bg-brand/10" : "border-border hover:bg-background"}`}
               >
-                <Film className="size-4" /> MP4 video (up to 720p)
+                <Film className="mt-0.5 size-4 shrink-0" /> MP4 video (up to 720p)
               </button>
               <button
                 type="button"
                 onClick={() => setFormat("mp3")}
-                className={`flex flex-1 items-center justify-center gap-2 border px-4 py-3 transition-colors ${format === "mp3" ? "border-brand bg-brand/10" : "border-border hover:bg-background"}`}
+                className={`flex flex-1 items-start justify-center gap-2 border px-4 py-3 text-center transition-colors ${format === "mp3" ? "border-brand bg-brand/10" : "border-border hover:bg-background"}`}
               >
-                <Music className="size-4" /> MP3 audio
+                <Music className="mt-0.5 size-4 shrink-0" /> MP3 audio
               </button>
             </div>
           </div>
