@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Download, Film, Link2, Loader2, Music, Search } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button, ButtonArrow } from "@/components/ui/button";
 import { recordToolOutput, usageKey } from "../../usage";
@@ -16,12 +16,24 @@ type VideoInfo = {
   maxDurationSeconds: number;
 };
 
-type Result = { name: string; size: number; url: string; format: "mp3" | "mp4" };
+type Result = { name: string; size: number; url: string; format: "mp3" | "mp4"; elapsedMs: number };
 
 function formatDuration(seconds: number) {
   const minutes = Math.floor(seconds / 60);
   const rest = seconds % 60;
   return `${minutes}:${rest.toString().padStart(2, "0")}`;
+}
+
+function formatElapsed(ms: number) {
+  return `${(ms / 1000).toFixed(1)}s`;
+}
+
+function downloadSteps(format: "mp3" | "mp4") {
+  return [
+    "Getting the video from YouTube",
+    `Converting to ${format.toUpperCase()}`,
+    "Creating your download file",
+  ];
 }
 
 function extractError(body: string, fallback: string) {
@@ -41,8 +53,21 @@ export default function YoutubeDownloader() {
   const [downloading, setDownloading] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState<Result | null>(null);
+  const [stepIndex, setStepIndex] = useState(0);
+  const [elapsedMs, setElapsedMs] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const stepTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => () => { if (result) URL.revokeObjectURL(result.url); }, [result]);
+
+  function clearProgressTimers() {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = null;
+    stepTimeoutsRef.current.forEach(clearTimeout);
+    stepTimeoutsRef.current = [];
+  }
+
+  useEffect(() => clearProgressTimers, []);
 
   async function lookUp() {
     const trimmed = url.trim();
@@ -72,6 +97,19 @@ export default function YoutubeDownloader() {
     if (!trimmed || downloading || info?.tooLong) return;
     setDownloading(true);
     setError("");
+    setResult((current) => { if (current) URL.revokeObjectURL(current.url); return null; });
+
+    clearProgressTimers();
+    setStepIndex(0);
+    setElapsedMs(0);
+    const startedAt = Date.now();
+    timerRef.current = setInterval(() => setElapsedMs(Date.now() - startedAt), 100);
+    // There is no real progress feed from the backend -- it is one request that
+    // downloads and converts before responding -- so these are timed guesses
+    // that give the user a sense of motion rather than a literal status.
+    stepTimeoutsRef.current.push(setTimeout(() => setStepIndex(1), 1200));
+    stepTimeoutsRef.current.push(setTimeout(() => setStepIndex(2), 3500));
+
     try {
       const response = await fetch("/api/tools/youtube-downloader/download", {
         method: "POST",
@@ -83,11 +121,18 @@ export default function YoutubeDownloader() {
       const name =
         response.headers.get("content-disposition")?.match(/filename="?([^";]+)"?/)?.[1] ||
         `${(info?.title || "video").slice(0, 80)}.${format}`;
-      setResult((current) => { if (current) URL.revokeObjectURL(current.url); return { name, size: blob.size, url: URL.createObjectURL(blob), format }; });
+      setStepIndex(downloadSteps(format).length);
+      const finalElapsedMs = Date.now() - startedAt;
+      setResult((current) => {
+        if (current) URL.revokeObjectURL(current.url);
+        return { name, size: blob.size, url: URL.createObjectURL(blob), format, elapsedMs: finalElapsedMs };
+      });
       recordToolOutput(usageKey("video", "youtube-downloader"));
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "The download failed.");
     } finally {
+      clearProgressTimers();
+      setElapsedMs(Date.now() - startedAt);
       setDownloading(false);
     }
   }
@@ -165,20 +210,43 @@ export default function YoutubeDownloader() {
           >
             <span className="inline-flex items-center gap-2">
               {downloading && <Loader2 className="size-5 animate-spin" />}
-              {downloading ? "Downloading..." : `Download ${format.toUpperCase()}`}
+              {downloading ? "Working..." : `Download ${format.toUpperCase()}`}
             </span>
             <ButtonArrow className="size-8 text-base" />
           </Button>
+
+          {downloading && (
+            <div className="grid gap-2 border border-border bg-background p-4">
+              <div className="flex items-center justify-between">
+                <span className="mono-label text-muted-foreground">Progress</span>
+                <span className="mono-label text-brand-dark">{formatElapsed(elapsedMs)}</span>
+              </div>
+              <ul className="grid gap-2">
+                {downloadSteps(format).map((label, index) => {
+                  const state = index < stepIndex ? "done" : index === stepIndex ? "active" : "pending";
+                  return (
+                    <li key={label} className="flex items-center gap-2 text-sm">
+                      {state === "done" && <Check className="size-4 shrink-0 text-green-700" />}
+                      {state === "active" && <Loader2 className="size-4 shrink-0 animate-spin text-brand" />}
+                      {state === "pending" && <span className="size-4 shrink-0 rounded-full border border-border" />}
+                      <span className={state === "pending" ? "text-muted-foreground" : "text-foreground"}>{label}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
         </div>
       )}
 
       <AnimatePresence>
         {result && (
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mt-8 border-t border-border pt-6">
-            <div className="mb-4 flex items-center gap-2 text-green-700">
+            <div className="mb-1 flex items-center gap-2 text-green-700">
               <Check className="size-5" />
               <h2 className="display text-2xl">Thank you for using the tool.</h2>
             </div>
+            <p className="mb-4 text-sm text-muted-foreground">Ready in {formatElapsed(result.elapsedMs)}.</p>
             <div className="flex items-center gap-3 border border-border bg-background p-3">
               {result.format === "mp3" ? <Music className="size-5 shrink-0 text-brand" /> : <Film className="size-5 shrink-0 text-brand" />}
               <div className="min-w-0 flex-1">
