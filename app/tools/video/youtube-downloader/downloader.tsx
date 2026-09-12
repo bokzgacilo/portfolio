@@ -8,6 +8,7 @@ import { Button, ButtonArrow } from "@/components/ui/button";
 import { recordToolOutput, usageKey } from "../../usage";
 
 type VideoInfo = {
+  jobId: string;
   title: string;
   thumbnail: string | null;
   channel: string | null;
@@ -58,8 +59,6 @@ export default function YoutubeDownloader() {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const stepTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
-  useEffect(() => () => { if (result) URL.revokeObjectURL(result.url); }, [result]);
-
   function clearProgressTimers() {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = null;
@@ -75,7 +74,7 @@ export default function YoutubeDownloader() {
     setLooking(true);
     setError("");
     setInfo(null);
-    setResult((current) => { if (current) URL.revokeObjectURL(current.url); return null; });
+    setResult(null);
     try {
       const response = await fetch("/api/tools/youtube-downloader/info", {
         method: "POST",
@@ -93,11 +92,10 @@ export default function YoutubeDownloader() {
   }
 
   async function download() {
-    const trimmed = url.trim();
-    if (!trimmed || downloading || info?.tooLong) return;
+    if (!info?.jobId || downloading || info.tooLong) return;
     setDownloading(true);
     setError("");
-    setResult((current) => { if (current) URL.revokeObjectURL(current.url); return null; });
+    setResult(null);
 
     clearProgressTimers();
     setStepIndex(0);
@@ -114,19 +112,15 @@ export default function YoutubeDownloader() {
       const response = await fetch("/api/tools/youtube-downloader/download", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: trimmed, format }),
+        body: JSON.stringify({ jobId: info.jobId, format }),
       });
-      if (!response.ok) throw new Error(extractError(await response.text(), "The download failed."));
-      const blob = await response.blob();
-      const name =
-        response.headers.get("content-disposition")?.match(/filename="?([^";]+)"?/)?.[1] ||
-        `${(info?.title || "video").slice(0, 80)}.${format}`;
+      const body = await response.text();
+      if (!response.ok) throw new Error(extractError(body, "The download failed."));
+      const parsed = JSON.parse(body) as { downloadUrl: string; sizeBytes: number };
+      const name = `${(info.title || "video").slice(0, 80)}.${format}`;
       setStepIndex(downloadSteps(format).length);
       const finalElapsedMs = Date.now() - startedAt;
-      setResult((current) => {
-        if (current) URL.revokeObjectURL(current.url);
-        return { name, size: blob.size, url: URL.createObjectURL(blob), format, elapsedMs: finalElapsedMs };
-      });
+      setResult({ name, size: parsed.sizeBytes, url: parsed.downloadUrl, format, elapsedMs: finalElapsedMs });
       recordToolOutput(usageKey("video", "youtube-downloader"));
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "The download failed.");
@@ -262,8 +256,9 @@ export default function YoutubeDownloader() {
       </AnimatePresence>
 
       <p className="mt-4 text-xs text-muted-foreground">
-        Processed on the server and streamed back to you; nothing is stored. Only download videos you own or have
-        permission to save, and respect YouTube&apos;s Terms of Service and applicable copyright law.
+        Processed on the server; your download link stays available for about an hour, then the file is deleted.
+        Only download videos you own or have permission to save, and respect YouTube&apos;s Terms of Service and
+        applicable copyright law.
       </p>
     </section>
   );
