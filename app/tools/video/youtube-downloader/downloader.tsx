@@ -68,15 +68,6 @@ export default function YoutubeDownloader() {
 
   useEffect(() => clearProgressTimers, []);
 
-  function clearProgressTimers() {
-    if (timerRef.current) clearInterval(timerRef.current);
-    timerRef.current = null;
-    stepTimeoutsRef.current.forEach(clearTimeout);
-    stepTimeoutsRef.current = [];
-  }
-
-  useEffect(() => clearProgressTimers, []);
-
   async function lookUp() {
     const trimmed = url.trim();
     if (!trimmed || looking) return;
