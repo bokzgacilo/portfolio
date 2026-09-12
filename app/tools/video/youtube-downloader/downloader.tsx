@@ -176,7 +176,7 @@ export default function YoutubeDownloader() {
 
           <div className="grid gap-2">
             <span className="mono-label text-muted-foreground">Format</span>
-            <div className="flex gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row">
               <button
                 type="button"
                 onClick={() => setFormat("mp4")}
