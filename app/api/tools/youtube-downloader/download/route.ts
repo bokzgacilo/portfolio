@@ -16,12 +16,12 @@ export async function POST(request: NextRequest) {
   try {
     body = await request.json();
   } catch {
-    return jsonError("Send JSON with a video URL and format.", 400);
+    return jsonError("Send JSON with a job id and format.", 400);
   }
-  const url = typeof body === "object" && body !== null ? (body as { url?: unknown }).url : undefined;
+  const jobId = typeof body === "object" && body !== null ? (body as { jobId?: unknown }).jobId : undefined;
   const format = typeof body === "object" && body !== null ? (body as { format?: unknown }).format : undefined;
-  if (typeof url !== "string" || !url.trim()) {
-    return jsonError("Enter a YouTube video URL.", 400);
+  if (typeof jobId !== "string" || !jobId.trim()) {
+    return jsonError("Look up a video before downloading it.", 400);
   }
   if (typeof format !== "string" || !FORMATS.has(format)) {
     return jsonError("Choose MP3 or MP4 as the format.", 400);
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
         "Content-Type": "application/json",
         origin: request.headers.get("origin") || "https://www.bokzgacilo.com",
       },
-      body: JSON.stringify({ url, format }),
+      body: JSON.stringify({ jobId, format }),
       cache: "no-store",
       // Downloads can take a while on a free-tier backend; give it real room.
       signal: AbortSignal.timeout(180_000),
@@ -44,20 +44,29 @@ export async function POST(request: NextRequest) {
     return jsonError("The video backend is unreachable. Check the API URL and backend service.", 502);
   }
 
-  const headers = new Headers({
-    "Cache-Control": "no-store",
-    "Content-Type": response.headers.get("content-type") || "application/octet-stream",
-  });
-  for (const name of [
-    "Content-Disposition",
-    "X-Youtube-Output-Format",
-    "X-Youtube-Output-Bytes",
-    "X-Youtube-Duration-Seconds",
-    "X-Processing-Ms",
-  ]) {
-    const value = response.headers.get(name);
-    if (value) headers.set(name, value);
+  const payload = await response.text();
+  if (!response.ok) {
+    return new Response(payload, {
+      status: response.status,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    });
   }
 
-  return new Response(await response.arrayBuffer(), { status: response.status, headers });
+  // The backend hands back a path relative to itself (e.g. /api/youtube/file/<id>).
+  // The browser downloads directly from the backend afterwards, so this needs
+  // to be an absolute URL rather than one relative to this Next.js origin.
+  let parsed: { downloadUrl?: unknown; sizeBytes?: unknown; expiresInSeconds?: unknown; elapsedMs?: unknown };
+  try {
+    parsed = JSON.parse(payload);
+  } catch {
+    return jsonError("The video backend returned an unexpected response.", 502);
+  }
+  if (typeof parsed.downloadUrl !== "string") {
+    return jsonError("The video backend returned an unexpected response.", 502);
+  }
+
+  return Response.json(
+    { ...parsed, downloadUrl: `${backendUrl()}${parsed.downloadUrl}` },
+    { status: 200, headers: { "Cache-Control": "no-store" } },
+  );
 }
